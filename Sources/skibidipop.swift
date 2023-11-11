@@ -3,6 +3,11 @@ import ArgumentParser
 @main
 struct FigletTool: ParsableCommand {
 
+    static var configuration = CommandConfiguration(
+        commandName: "Skibidipop",
+        abstract: "Git chaining assistant"
+    )
+
     @Argument(help: "Command")
     var command: String
 
