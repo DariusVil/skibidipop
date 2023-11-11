@@ -2,7 +2,7 @@
 struct FigletTool {
 
     static func main() {
-        print("lol")
+        let controller = CompositionRoot.controller
     }
 }
 
