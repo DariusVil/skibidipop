@@ -1,8 +1,6 @@
 TODO:
 
-- [x] Decide basic on functionality
-- [ ] Create github repo
-
+- [ ] Add documentation
 - [ ] Implement chain
 - [ ] Implement sync
 - [ ] Implement list
