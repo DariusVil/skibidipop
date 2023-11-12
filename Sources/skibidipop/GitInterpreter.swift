@@ -3,6 +3,7 @@ import Foundation
 protocol GitInterpreting {
 
     func initialize()
+    func createBranch(with name: String)
     func rebase(onto branch: String)
 }
 
@@ -12,6 +13,10 @@ extension GitInterpreter: GitInterpreting {
 
     func initialize() {
         execute(["init"])
+    }
+
+    func createBranch(with name: String) {
+        execute(["branch", name])
     }
 
     func rebase(onto branch: String) {
