@@ -8,6 +8,7 @@ final class GitInterpreterTests: XCTestCase {
 
     override func setUp() {
         sut = GitInterpreter()
+        sut.workingDirectory = URL(fileURLWithPath: workingDirectory)
 
         createTestDirectory()
     }
@@ -16,12 +17,18 @@ final class GitInterpreterTests: XCTestCase {
         removeTestDirectory()
     }
 
-    func testSetWorkingDirectory_changesDirectoryToSpecified() {
-        sut.workingDirectory = URL(fileURLWithPath: workingDirectory)
+    func testInitialize_initializesGitRepo() {
         sut.initialize()
 
         XCTAssert(sut.isRepository)
     }
+
+    // func testCreateBranch_shouldCreateBranchWithAGivenName() {
+    //     sut.initialize()
+    //     sut.createBranch(with: "technical/test-branch")
+
+    //     XCTAssert(sut.branches.contains("technical/test-branch"))
+    // }
 
     private func createTestDirectory() {
         let fileManager = FileManager.default

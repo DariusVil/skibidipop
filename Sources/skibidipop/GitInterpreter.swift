@@ -7,8 +7,10 @@ protocol GitInterpreting {
     func createBranch(with name: String)
     func checkout(into branchName: String)
     func rebase(onto branch: String)
+    func commit(with message: String)
 
     var isRepository: Bool { get }
+    var branches: [String] { get }
 }
 
 struct GitInterpreter {
@@ -36,11 +38,20 @@ extension GitInterpreter: GitInterpreting {
         execute(["rebase", "master"])
     }
 
+    func commit(with message: String) {
+        
+    }
+
     var isRepository: Bool {
         let result = execute(["rev-parse", "--is-inside-work-tree"])
             .trimmingCharacters(in: .whitespacesAndNewlines)
 
         return result == "true"
+    }
+
+    var branches: [String] {
+        let result: String = execute(["branch"])
+        return result.split(separator: "\n").map { String($0) }
     }
 
     @discardableResult
