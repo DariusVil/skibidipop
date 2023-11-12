@@ -2,15 +2,24 @@ import Foundation
 
 protocol GitInterpreting {
 
+    mutating func setWorkingDirectory(to directory: URL)
+
     func initialize()
     func createBranch(with name: String)
-    func checkout(into branchName: String))
+    func checkout(into branchName: String)
     func rebase(onto branch: String)
 }
 
-struct GitInterpreter {}
+struct GitInterpreter {
+
+    var workingDirectory: URL?
+}
 
 extension GitInterpreter: GitInterpreting {
+
+    mutating func setWorkingDirectory(to directory: URL) {
+        workingDirectory = directory
+    }
 
     func initialize() {
         execute(["init"])
@@ -30,6 +39,9 @@ extension GitInterpreter: GitInterpreting {
 
     private func execute(_ arguments: [String]) {
         let task = Process()
+        if let workingDirectory {
+            task.currentDirectoryURL = workingDirectory
+        }
         task.executableURL = URL(string: "/usr/bin/git")
         task.arguments = arguments
 
