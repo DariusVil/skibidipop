@@ -4,6 +4,7 @@ protocol GitInterpreting {
 
     func initialize()
     func createBranch(with name: String)
+    func checkout(into branchName: String))
     func rebase(onto branch: String)
 }
 
@@ -17,6 +18,10 @@ extension GitInterpreter: GitInterpreting {
 
     func createBranch(with name: String) {
         execute(["branch", name])
+    }
+
+    func checkout(into branchName: String) {
+        execute(["checkout", branchName])
     }
 
     func rebase(onto branch: String) {
