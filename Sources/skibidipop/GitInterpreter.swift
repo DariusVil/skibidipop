@@ -1,7 +1,6 @@
 import Foundation
 
 protocol GitInterpreting {
-
     mutating func setWorkingDirectory(to directory: URL)
 
     func initialize()
@@ -11,12 +10,10 @@ protocol GitInterpreting {
 }
 
 struct GitInterpreter {
-
     var workingDirectory: URL?
 }
 
 extension GitInterpreter: GitInterpreting {
-
     mutating func setWorkingDirectory(to directory: URL) {
         workingDirectory = directory
     }
@@ -33,7 +30,7 @@ extension GitInterpreter: GitInterpreting {
         execute(["checkout", branchName])
     }
 
-    func rebase(onto branch: String) {
+    func rebase(onto _: String) {
         execute(["rebase", "master"])
     }
 
@@ -42,23 +39,25 @@ extension GitInterpreter: GitInterpreting {
         if let workingDirectory {
             task.currentDirectoryURL = workingDirectory
         }
-        task.executableURL = URL(string: "/usr/bin/git")
-        task.arguments = arguments
+        task.executableURL = URL(fileURLWithPath: "/bin/bash")
+
+        let command = (["git"] + arguments).joined(separator: " ")
+        task.arguments = ["-c", command]
+
+        print("arguments" + arguments.description)
 
         let pipe = Pipe()
         task.standardOutput = pipe
 
         do {
             try task.run()
-        } catch {
-
-        }
+        } catch {}
 
         let data = pipe.fileHandleForReading.readDataToEndOfFile()
         if let output = String(data: data, encoding: .utf8) {
             print(output)
         }
 
-        task.waitUntilExit()    
+        task.waitUntilExit()
     }
 }
