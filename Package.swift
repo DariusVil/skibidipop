@@ -17,7 +17,10 @@ let package = Package(
         ),
         .testTarget(
             name: "skibidipopTests",
-            dependencies: ["skibidipop"]
+            dependencies: [
+                "skibidipop",
+                .product(name: "ArgumentParser", package: "swift-argument-parser"),
+            ]
         )
     ]
 )
