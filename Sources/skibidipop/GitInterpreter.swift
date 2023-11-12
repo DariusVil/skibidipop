@@ -7,6 +7,8 @@ protocol GitInterpreting {
     func createBranch(with name: String)
     func checkout(into branchName: String)
     func rebase(onto branch: String)
+
+    var isRepository: Bool { get }
 }
 
 struct GitInterpreter {
@@ -34,7 +36,15 @@ extension GitInterpreter: GitInterpreting {
         execute(["rebase", "master"])
     }
 
-    private func execute(_ arguments: [String]) {
+    var isRepository: Bool {
+        let result = execute(["rev-parse", "--is-inside-work-tree"])
+            .trimmingCharacters(in: .whitespacesAndNewlines)
+
+        return result == "true"
+    }
+
+    @discardableResult
+    private func execute(_ arguments: [String]) -> String {
         let task = Process()
         if let workingDirectory {
             task.currentDirectoryURL = workingDirectory
@@ -51,13 +61,18 @@ extension GitInterpreter: GitInterpreting {
 
         do {
             try task.run()
-        } catch {}
+        } catch {
+            print(error)
+        }
 
         let data = pipe.fileHandleForReading.readDataToEndOfFile()
         if let output = String(data: data, encoding: .utf8) {
-            print(output)
+            print("output" + output)
+            return output
         }
 
         task.waitUntilExit()
+
+        return ""
     }
 }

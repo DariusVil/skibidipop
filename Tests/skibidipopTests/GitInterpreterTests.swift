@@ -20,7 +20,7 @@ final class GitInterpreterTests: XCTestCase {
         sut.workingDirectory = URL(fileURLWithPath: workingDirectory)
         sut.initialize()
 
-        XCTAssert(isGitRepository(atPath: workingDirectory))
+        XCTAssert(sut.isRepository)
     }
 
     private func createTestDirectory() {
@@ -49,29 +49,6 @@ final class GitInterpreterTests: XCTestCase {
         } catch {
             print("Error: \(error.localizedDescription)")
         }
-    }
-
-    private func isGitRepository(atPath path: String) -> Bool {
-        let process = Process()
-        let pipe = Pipe()
-
-        process.executableURL = URL(fileURLWithPath: "/usr/bin/git")
-        process.arguments = ["-C", path, "rev-parse", "--is-inside-work-tree"]
-        process.standardOutput = pipe
-
-        do {
-            try process.run()
-            process.waitUntilExit()
-
-            let data = pipe.fileHandleForReading.readDataToEndOfFile()
-            if let output = String(data: data, encoding: .utf8)?.trimmingCharacters(in: .whitespacesAndNewlines) {
-                return output == "true"
-            }
-        } catch {
-            print("Error: \(error.localizedDescription)")
-        }
-
-        return false
     }
 }
 
