@@ -1,7 +1,6 @@
 import Foundation
 
 protocol GitInterpreting {
-
     func initialize()
     func createBranch(with name: String)
     func checkout(into branchName: String)
@@ -11,15 +10,14 @@ protocol GitInterpreting {
 
     var isRepository: Bool { get }
     var branches: [String] { get }
+    var currentBranch: String { get }
 }
 
 struct GitInterpreter {
-
     let commandPeformer: CommandPerforming
 }
 
 extension GitInterpreter: GitInterpreting {
-
     func initialize() {
         execute(["init"])
     }
@@ -37,7 +35,7 @@ extension GitInterpreter: GitInterpreting {
     }
 
     func commit(with message: String) {
-        execute(["commit", "-m", message])
+        execute(["commit", "-m", "\"\(message)\""])
     }
 
     func add() {
@@ -53,14 +51,17 @@ extension GitInterpreter: GitInterpreting {
 
     var branches: [String] {
         let result: String = execute(["branch"])
-        return result.split(separator: "\n").map {
-             String($0).trimmingCharacters(in: .whitespacesAndNewlines) 
+        return result.split(separator: " ").map {
+            String($0).trimmingCharacters(in: .whitespacesAndNewlines)
         }
+    }
+
+    var currentBranch: String {
+        execute(["branch", "--show-current"]).trimmingCharacters(in: .whitespacesAndNewlines)
     }
 }
 
 extension GitInterpreter {
-
     @discardableResult
     private func execute(_ arguments: [String]) -> String {
         commandPeformer.run(command: "git " + arguments.joined(separator: " "))

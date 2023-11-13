@@ -8,13 +8,12 @@ final class GitInterpreterTests: XCTestCase {
 
     override func setUp() {
         fixture = .init()
-
         createTestDirectory()
     }
 
     override func tearDown() {
-        fixture = nil
         removeTestDirectory()
+        fixture = nil
     }
 
     func testInitialize_initializesGitRepo() {
@@ -33,8 +32,19 @@ final class GitInterpreterTests: XCTestCase {
 
         fixture.sut.createBranch(with: "technical/test-branch")
 
-        let result = fixture.sut.branches
-        XCTAssert(result.contains("technical/test-branch"))
+        XCTAssert(fixture.sut.branches.contains("technical/test-branch"))
+    }
+
+    func testCheckout_givenBranchIsAvailable_returnsTrue() {
+        fixture.sut.initialize()
+        fixture.commandPerformer.run(command: "touch newfile.txt")
+        fixture.sut.add()
+        fixture.sut.commit(with: "commit message")
+        fixture.sut.createBranch(with: "technical/test-branch")
+
+        fixture.sut.checkout(into: "technical/test-branch")
+
+        XCTAssertEqual(fixture.sut.currentBranch, "technical/test-branch")
     }
 
     private func createTestDirectory() {
@@ -71,6 +81,6 @@ private struct Fixture {
     init() {
         commandPerformer = CommandPerformer()
         commandPerformer.setWorkingDirectory(into: URL(fileURLWithPath: workingDirectory))
-        sut = GitInterpreter(commandPeformer: CommandPerformer())
+        sut = GitInterpreter(commandPeformer: commandPerformer)
     }
 }
