@@ -2,19 +2,19 @@ import Foundation
 
 protocol CommandPerforming {
 
-    mutating func setWorkingDirectory(into directory: URL)
+    func setWorkingDirectory(into directory: URL)
     @discardableResult
     func run(command: String) -> String
 }
 
-struct CommandPerformer {
+final class CommandPerformer {
 
     var workingDirectory: URL?
 }
 
 extension CommandPerformer: CommandPerforming {
     
-    mutating func setWorkingDirectory(into directory: URL) {
+    func setWorkingDirectory(into directory: URL) {
         self.workingDirectory = directory
     }
 

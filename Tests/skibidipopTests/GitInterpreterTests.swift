@@ -1,36 +1,41 @@
 @testable import skibidipop
 import XCTest
 
-final class GitInterpreterTests: XCTestCase {
-    private let workingDirectory = "/tmp/skibipopTests"
+fileprivate let workingDirectory = "/tmp/skibipopTests"
 
-    private var sut: GitInterpreter!
+final class GitInterpreterTests: XCTestCase {
+    private var fixture: Fixture!
 
     override func setUp() {
-        var commandPerformer = CommandPerformer()
-        commandPerformer.setWorkingDirectory(into: URL(fileURLWithPath: workingDirectory))
-        sut = GitInterpreter(commandPeformer: CommandPerformer())
+        fixture = .init()
 
         createTestDirectory()
     }
 
     override func tearDown() {
+        fixture = nil
         removeTestDirectory()
     }
 
     func testInitialize_initializesGitRepo() {
-        sut.initialize()
+        fixture.sut.initialize()
 
-        XCTAssert(sut.isRepository)
+        XCTAssert(fixture.sut.isRepository)
     }
 
-    // func testCreateBranch_shouldCreateBranchWithAGivenName() {
-    //     sut.initialize()
-    //     sut.
-    //     sut.createBranch(with: "technical/test-branch")
+    func testCreateBranch_shouldCreateBranchWithAGivenName() {
+        fixture.sut.initialize()
 
-    //     XCTAssert(sut.branches.contains("technical/test-branch"))
-    // }
+        // we need an initial commit in order for new branch to work
+        fixture.commandPerformer.run(command: "touch newfile.txt")
+        fixture.sut.add()
+        fixture.sut.commit(with: "commit message")
+
+        fixture.sut.createBranch(with: "technical/test-branch")
+
+        let result = fixture.sut.branches
+        XCTAssert(result.contains("technical/test-branch"))
+    }
 
     private func createTestDirectory() {
         let fileManager = FileManager.default
@@ -42,7 +47,6 @@ final class GitInterpreterTests: XCTestCase {
                 withIntermediateDirectories: true,
                 attributes: nil
             )
-            print("Directory created successfully.")
         } catch {
             print("Error creating directory: \(error.localizedDescription)")
         }
@@ -54,10 +58,19 @@ final class GitInterpreterTests: XCTestCase {
 
         do {
             try fileManager.removeItem(at: directoryURL)
-            print("Directory deleted successfully")
         } catch {
             print("Error: \(error.localizedDescription)")
         }
     }
 }
 
+private struct Fixture {
+    let sut: GitInterpreter
+    let commandPerformer: CommandPerforming
+
+    init() {
+        commandPerformer = CommandPerformer()
+        commandPerformer.setWorkingDirectory(into: URL(fileURLWithPath: workingDirectory))
+        sut = GitInterpreter(commandPeformer: CommandPerformer())
+    }
+}

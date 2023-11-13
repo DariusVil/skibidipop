@@ -53,12 +53,15 @@ extension GitInterpreter: GitInterpreting {
 
     var branches: [String] {
         let result: String = execute(["branch"])
-        return result.split(separator: "\n").map { String($0) }
+        return result.split(separator: "\n").map {
+             String($0).trimmingCharacters(in: .whitespacesAndNewlines) 
+        }
     }
 }
 
 extension GitInterpreter {
 
+    @discardableResult
     private func execute(_ arguments: [String]) -> String {
         commandPeformer.run(command: "git " + arguments.joined(separator: " "))
     }
