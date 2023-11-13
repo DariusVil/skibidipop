@@ -40,7 +40,7 @@ extension CommandPerformer: CommandPerforming {
 
         let data = pipe.fileHandleForReading.readDataToEndOfFile()
         if let output = String(data: data, encoding: .utf8) {
-            print("output" + output)
+            print("output " + output)
             return output
         }
 
