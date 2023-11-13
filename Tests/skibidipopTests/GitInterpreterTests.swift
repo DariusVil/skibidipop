@@ -7,8 +7,9 @@ final class GitInterpreterTests: XCTestCase {
     private var sut: GitInterpreter!
 
     override func setUp() {
-        sut = GitInterpreter()
-        sut.workingDirectory = URL(fileURLWithPath: workingDirectory)
+        var commandPerformer = CommandPerformer()
+        commandPerformer.setWorkingDirectory(into: URL(fileURLWithPath: workingDirectory))
+        sut = GitInterpreter(commandPeformer: CommandPerformer())
 
         createTestDirectory()
     }
@@ -25,6 +26,7 @@ final class GitInterpreterTests: XCTestCase {
 
     // func testCreateBranch_shouldCreateBranchWithAGivenName() {
     //     sut.initialize()
+    //     sut.
     //     sut.createBranch(with: "technical/test-branch")
 
     //     XCTAssert(sut.branches.contains("technical/test-branch"))

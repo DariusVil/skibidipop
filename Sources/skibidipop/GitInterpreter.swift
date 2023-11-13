@@ -1,26 +1,24 @@
 import Foundation
 
 protocol GitInterpreting {
-    mutating func setWorkingDirectory(to directory: URL)
 
     func initialize()
     func createBranch(with name: String)
     func checkout(into branchName: String)
     func rebase(onto branch: String)
     func commit(with message: String)
+    func add()
 
     var isRepository: Bool { get }
     var branches: [String] { get }
 }
 
 struct GitInterpreter {
-    var workingDirectory: URL?
+
+    let commandPeformer: CommandPerforming
 }
 
 extension GitInterpreter: GitInterpreting {
-    mutating func setWorkingDirectory(to directory: URL) {
-        workingDirectory = directory
-    }
 
     func initialize() {
         execute(["init"])
@@ -39,7 +37,11 @@ extension GitInterpreter: GitInterpreting {
     }
 
     func commit(with message: String) {
-        
+        execute(["commit", "-m", message])
+    }
+
+    func add() {
+        execute(["add", "."])
     }
 
     var isRepository: Bool {
@@ -53,37 +55,11 @@ extension GitInterpreter: GitInterpreting {
         let result: String = execute(["branch"])
         return result.split(separator: "\n").map { String($0) }
     }
+}
 
-    @discardableResult
+extension GitInterpreter {
+
     private func execute(_ arguments: [String]) -> String {
-        let task = Process()
-        if let workingDirectory {
-            task.currentDirectoryURL = workingDirectory
-        }
-        task.executableURL = URL(fileURLWithPath: "/bin/bash")
-
-        let command = (["git"] + arguments).joined(separator: " ")
-        task.arguments = ["-c", command]
-
-        print("arguments" + arguments.description)
-
-        let pipe = Pipe()
-        task.standardOutput = pipe
-
-        do {
-            try task.run()
-        } catch {
-            print(error)
-        }
-
-        let data = pipe.fileHandleForReading.readDataToEndOfFile()
-        if let output = String(data: data, encoding: .utf8) {
-            print("output" + output)
-            return output
-        }
-
-        task.waitUntilExit()
-
-        return ""
+        commandPeformer.run(command: "git " + arguments.joined(separator: " "))
     }
 }
