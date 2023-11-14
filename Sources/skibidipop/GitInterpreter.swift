@@ -30,8 +30,8 @@ extension GitInterpreter: GitInterpreting {
         execute(["checkout", branchName])
     }
 
-    func rebase(onto _: String) {
-        execute(["rebase", "master"])
+    func rebase(onto branch: String) {
+        execute(["rebase", branch])
     }
 
     func commit(with message: String) {

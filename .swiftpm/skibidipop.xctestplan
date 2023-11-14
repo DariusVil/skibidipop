@@ -1,0 +1,37 @@
+{
+  "configurations" : [
+    {
+      "id" : "6B91BF67-A451-40EA-ACE4-325CFADC440D",
+      "name" : "Test Scheme Action",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+    "codeCoverage" : {
+      "targets" : [
+        {
+          "containerPath" : "container:",
+          "identifier" : "skibidipop",
+          "name" : "skibidipop"
+        }
+      ]
+    },
+    "targetForVariableExpansion" : {
+      "containerPath" : "container:",
+      "identifier" : "skibidipop",
+      "name" : "skibidipop"
+    }
+  },
+  "testTargets" : [
+    {
+      "target" : {
+        "containerPath" : "container:",
+        "identifier" : "skibidipopTests",
+        "name" : "skibidipopTests"
+      }
+    }
+  ],
+  "version" : 1
+}

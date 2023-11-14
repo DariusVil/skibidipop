@@ -47,6 +47,29 @@ final class GitInterpreterTests: XCTestCase {
         XCTAssertEqual(fixture.sut.currentBranch, "technical/test-branch")
     }
 
+    func testRebase_whenFeatureBranchIsBehindMain_shouldGetTheCommit() {
+        fixture.sut.initialize()
+
+        // Create a new branch
+        fixture.commandPerformer.run(command: "touch newfile.txt")
+        fixture.sut.add()
+        fixture.sut.commit(with: "commit message")
+        fixture.sut.createBranch(with: "technical/test-branch")
+
+        // Add a commit to main
+        fixture.sut.checkout(into: "main")
+        fixture.commandPerformer.run(command: "touch secondfile.txt")
+        fixture.sut.add()
+        fixture.sut.commit(with: "second commit message")
+
+        fixture.sut.checkout(into: "technical/test-branch")
+
+        fixture.sut.rebase(onto: "main")
+
+        let commitDiff = fixture.commandPerformer.run(command: "git log technical/test-branch..main")
+        XCTAssert(commitDiff.isEmpty)
+    }
+
     private func createTestDirectory() {
         let fileManager = FileManager.default
         let directoryURL = URL(fileURLWithPath: workingDirectory)
