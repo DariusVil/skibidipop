@@ -15,23 +15,27 @@ struct Storage {
 }
 
 extension Storage: Codable {
-    // enum CodingKey: String, CodingKey {
-    //     case repositories = "repositories"
-    // }
+
+    enum CodingKeys: String, CodingKey {
+        case repositories = "repositories"
+    }
 }
 
 extension Storage.Respository: Codable {
-    // enum CodingKey: String, CodingKey {
-    //     case chain = "chain"
-    // }
+    enum CodingKeys: String, CodingKey {
+        case chains = "chains"
+    }
 }
 
 extension Storage.Respository.Chain: Codable {
-    // enum CodingKey: String, CodingKey {
-    //     case name = "name"
-    // }
+    enum CodingKeys: String, CodingKey {
+        case branches = "branches"
+    }
 }
 
 extension Storage.Respository.Chain.Branch: Codable {
 
+    enum CodingKeys: String, CodingKey {
+        case name = "name"
+    }
 }
