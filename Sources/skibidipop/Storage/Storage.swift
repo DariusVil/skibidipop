@@ -3,15 +3,31 @@ struct Storage {
         struct Chain {
             struct Branch {
                 let name: String
+
+                init(name: String) {
+                    self.name = name
+                }
             }
 
             let branches: [Branch]
+
+            init(branches: [Branch]) {
+                self.branches = branches
+            }
         }
 
         let chains: [Chain]
+
+        init(chains: [Chain]) {
+            self.chains = chains
+        }
     }
 
     let repositories: [Respository]
+
+    init(repositories: [Respository]) {
+        self.repositories = repositories
+    }
 }
 
 extension Storage: Codable {
