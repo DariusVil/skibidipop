@@ -21,9 +21,21 @@ final class StorageManagerTests: XCTestCase {
         XCTAssert(fileManager.fileExists(atPath: storagePathProviderStub.path.path + "/storage.json"))
     }
 
-    // func testLoad_loadsJSONContents() {
-        // TODO fill in this and rename path to dir
-    // }
+     func testLoad_loadsJSONContents() {
+        let sut = StorageManager(storagePathProvider: storagePathProviderStub)
+
+        let storage = Storage.build(repositories: [.build(chains: [.build(branches: [.build(name: "branchName")])])])
+
+        sut.save(storage)
+
+        let expectation = XCTestExpectation(description: "Should load")
+        sut.load { loadedStorage in
+            expectation.fulfill()
+            XCTAssertEqual(loadedStorage, storage)     
+        }
+
+        wait(for: [expectation], timeout: 5)
+     }
 }
 
 private struct StoragePathProvidingStub: StoragePathProviding {

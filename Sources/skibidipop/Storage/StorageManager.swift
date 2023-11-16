@@ -35,7 +35,17 @@ extension StorageManager: StorageManaging {
         }
     }
 
-    func load(completion _: @escaping (Storage) -> Void) {
-        fatalError("Not implemented")
+    func load(completion: @escaping (Storage?) -> Void) {
+        do {
+            let data = try Data(contentsOf: storagePathProvider.path.appendingPathComponent("storage.json"))
+            let decoder = JSONDecoder()
+            let storage = try decoder.decode(Storage.self, from: data)
+
+            completion(storage)
+    
+        
+        } catch {
+
+        }
     }
 }

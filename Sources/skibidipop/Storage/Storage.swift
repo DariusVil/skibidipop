@@ -1,7 +1,7 @@
-struct Storage {
-    struct Respository {
-        struct Chain {
-            struct Branch {
+struct Storage: Equatable {
+    struct Repository: Equatable {
+        struct Chain: Equatable {
+            struct Branch: Equatable {
                 let name: String
 
                 init(name: String) {
@@ -23,9 +23,9 @@ struct Storage {
         }
     }
 
-    let repositories: [Respository]
+    let repositories: [Repository]
 
-    init(repositories: [Respository]) {
+    init(repositories: [Repository]) {
         self.repositories = repositories
     }
 }
@@ -37,19 +37,19 @@ extension Storage: Codable {
     }
 }
 
-extension Storage.Respository: Codable {
+extension Storage.Repository: Codable {
     enum CodingKeys: String, CodingKey {
         case chains = "chains"
     }
 }
 
-extension Storage.Respository.Chain: Codable {
+extension Storage.Repository.Chain: Codable {
     enum CodingKeys: String, CodingKey {
         case branches = "branches"
     }
 }
 
-extension Storage.Respository.Chain.Branch: Codable {
+extension Storage.Repository.Chain.Branch: Codable {
 
     enum CodingKeys: String, CodingKey {
         case name = "name"
