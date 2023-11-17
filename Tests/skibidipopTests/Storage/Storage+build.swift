@@ -2,29 +2,29 @@
 
 extension Storage {
 
-    static func build(repositories: [Storage.Repository] = []) -> Self {
+    static func build(repositories: [Repository] = []) -> Self {
         .init(repositories: repositories)
     }
 }
 
-extension Storage.Repository {
+extension Repository {
 
-    static func build(chains: [Storage.Repository.Chain]) -> Self {
-        Storage.Repository.init(chains: chains)
+    static func build(chains: [Chain]) -> Self {
+        Repository.init(chains: chains)
     }
 }
 
-extension Storage.Repository.Chain {
+extension Chain {
 
-    static func build(branches: [Storage.Repository.Chain.Branch]) -> Self {
-        Storage.Repository.Chain(branches: branches)
+    static func build(branches: [Branch]) -> Self {
+        Chain(branches: branches)
     }
 }
 
-extension Storage.Repository.Chain.Branch {
+extension Branch {
 
     static func build(name: String = "") -> Self {
-        Storage.Repository.Chain.Branch(name: name)
+        Branch(name: name)
     }
 }
 
