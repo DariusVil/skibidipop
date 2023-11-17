@@ -20,7 +20,8 @@ let package = Package(
             dependencies: [
                 "skibidipop",
                 .product(name: "ArgumentParser", package: "swift-argument-parser"),
-            ]
+            ],
+            path: "Tests"
         )
     ]
 )
