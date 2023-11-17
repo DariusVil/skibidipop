@@ -1,4 +1,7 @@
 import Foundation
+#if canImport(FoundationNetworking)
+import FoundationNetworking
+#endif
 
 struct StorageManager {
     private let storagePathProvider: StoragePathProviding
@@ -36,16 +39,21 @@ extension StorageManager: StorageManaging {
     }
 
     func load(completion: @escaping (Storage?) -> Void) {
+        let path = storagePathProvider.path.appendingPathComponent("storage.json").path
+
+        guard FileManager.default.fileExists(atPath: path) else {
+            completion(nil)
+            return
+        }
+
         do {
-            let data = try Data(contentsOf: storagePathProvider.path.appendingPathComponent("storage.json"))
+            let data = try Data(contentsOf: URL(fileURLWithPath: path), options: .mappedIfSafe)
             let decoder = JSONDecoder()
             let storage = try decoder.decode(Storage.self, from: data)
 
             completion(storage)
-    
-        
         } catch {
-
+            completion(nil)
         }
     }
 }

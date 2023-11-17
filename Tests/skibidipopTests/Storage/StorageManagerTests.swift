@@ -24,7 +24,9 @@ final class StorageManagerTests: XCTestCase {
      func testLoad_loadsJSONContents() {
         let sut = StorageManager(storagePathProvider: storagePathProviderStub)
 
-        let storage = Storage.build(repositories: [.build(chains: [.build(branches: [.build(name: "branchName")])])])
+        let storage = Storage.build(
+            repositories: [.build(chains: [.build(branches: [.build(name: "branchName")])])]
+        )
 
         sut.save(storage)
 
