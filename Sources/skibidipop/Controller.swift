@@ -17,11 +17,23 @@ struct Controller {
 extension Controller: Controlling {
 
     func chain(branch: String) {
-        // Load storage. If no storage then create initial storage
-        // Create new branch, checkout into it, commit changes
-        // Save branch into storage
+        guard let repositoryName = gitInterpreter.repositoryName else {
+            printer.print("Repository not found")
+            return
+        }
 
-        fatalError("Not implemented")
+
+        gitInterpreter.checkout(into: branch)
+        gitInterpreter.add()
+        gitInterpreter.commit(with: branch)
+
+        let storage = storageManager.load()
+        if storage == nil {
+            let initialStorage = Storage(repositories: [Repository(chains: [.init(branches: [.init(name: branch)])], name: repositoryName)])
+            storageManager.save(initialStorage)
+        } else {
+            // need to update find current chain here, update it with a new branch and save it
+        }
     }
 
     func sync() {

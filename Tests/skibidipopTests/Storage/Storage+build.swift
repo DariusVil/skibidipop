@@ -9,14 +9,14 @@ extension Storage {
 
 extension Repository {
 
-    static func build(chains: [Chain]) -> Self {
-        Repository.init(chains: chains)
+    static func build(chains: [Chain] = [], name: String = "") -> Self {
+        Repository.init(chains: chains, name: name)
     }
 }
 
 extension Chain {
 
-    static func build(branches: [Branch]) -> Self {
+    static func build(branches: [Branch] = []) -> Self {
         Chain(branches: branches)
     }
 }

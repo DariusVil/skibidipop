@@ -7,6 +7,7 @@ final class StorageDecodingTests: XCTestCase {
         {
                 "repositories": [
                     {
+                        "name": "repo", 
                         "chains": [
                             {
                                 "branches": [
