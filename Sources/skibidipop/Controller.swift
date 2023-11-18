@@ -25,6 +25,10 @@ extension Controller: Controlling {
     }
 
     func list() {
+        // Get current branch and repo name
+        // Use them to find chain
+        // Print the chain
+
         fatalError("Not implemented")
     }
 
