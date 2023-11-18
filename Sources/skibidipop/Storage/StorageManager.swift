@@ -3,6 +3,12 @@ import Foundation
 import FoundationNetworking
 #endif
 
+protocol StorageManaging {
+
+    func save(_ storage: Storage)
+    func load() -> Storage?
+}
+
 struct StorageManager {
     private let storagePathProvider: StoragePathProviding
 
@@ -38,12 +44,11 @@ extension StorageManager: StorageManaging {
         }
     }
 
-    func load(completion: @escaping (Storage?) -> Void) {
+    func load() -> Storage? {
         let path = storagePathProvider.path.appendingPathComponent("storage.json").path
 
         guard FileManager.default.fileExists(atPath: path) else {
-            completion(nil)
-            return
+            return nil
         }
 
         do {
@@ -51,9 +56,9 @@ extension StorageManager: StorageManaging {
             let decoder = JSONDecoder()
             let storage = try decoder.decode(Storage.self, from: data)
 
-            completion(storage)
+            return storage
         } catch {
-            completion(nil)
+            return nil
         }
     }
 }

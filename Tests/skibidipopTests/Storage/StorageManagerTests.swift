@@ -31,12 +31,9 @@ final class StorageManagerTests: XCTestCase {
         sut.save(storage)
 
         let expectation = XCTestExpectation(description: "Should load")
-        sut.load { loadedStorage in
-            expectation.fulfill()
-            XCTAssertEqual(loadedStorage, storage)     
-        }
+        let loadedStorage = sut.load()
 
-        wait(for: [expectation], timeout: 5)
+        XCTAssertEqual(loadedStorage, storage)     
      }
 }
 
