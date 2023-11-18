@@ -11,6 +11,7 @@ protocol GitInterpreting {
     var isRepository: Bool { get }
     var branches: [String] { get }
     var currentBranch: String { get }
+    var repositoryName: String? { get }
 }
 
 struct GitInterpreter {
@@ -58,6 +59,13 @@ extension GitInterpreter: GitInterpreting {
 
     var currentBranch: String {
         execute(["branch", "--show-current"]).trimmingCharacters(in: .whitespacesAndNewlines)
+    }
+
+    var repositoryName: String? {
+        let result = commandPeformer.run(command: "basename `git rev-parse --show-toplevel`")
+            .trimmingCharacters(in: .whitespacesAndNewlines)
+
+        return result.isEmpty ? nil : result
     }
 }
 
