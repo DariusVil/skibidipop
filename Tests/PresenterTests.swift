@@ -1,10 +1,10 @@
 import XCTest
 @testable import skibidipop
 
-final class TextFormatterTests: XCTestCase {
+final class PresenterTests: XCTestCase {
 
     func testFormat_whenChainHasNoBranches_returnsEmptyString() {
-        let sut = skibidipop.TextFormatter()
+        let sut = skibidipop.Presenter()
 
         let result = sut.format(.build(branches: []), selectedBranch: .build())
 
@@ -12,7 +12,7 @@ final class TextFormatterTests: XCTestCase {
     }
 
     func testFormat_whenChainSeveralBranches_returnsFormattedString() {
-        let sut = skibidipop.TextFormatter()
+        let sut = skibidipop.Presenter()
 
         let result = sut.format(
             .build(

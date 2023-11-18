@@ -1,11 +1,11 @@
-protocol TextFormatting {
+protocol Presenting {
 
     func format(_ chain: Chain, selectedBranch: Branch) -> String
 }
 
-struct TextFormatter {}
+struct Presenter {}
 
-extension TextFormatter: TextFormatting {
+extension Presenter: Presenting {
 
     func format(_ chain: Chain, selectedBranch: Branch) -> String {
         chain.branches.map {
