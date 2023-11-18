@@ -9,6 +9,9 @@ protocol Controlling {
 struct Controller {
 
     let gitInterpreter: GitInterpreting
+    let presenter: Presenting
+    let printer: Printing
+    let storageManager: StorageManaging
 }
 
 extension Controller: Controlling {
