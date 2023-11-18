@@ -89,6 +89,25 @@ final class GitInterpreterTests: XCTestCase {
 
         XCTAssertEqual(fixture.sut.repositoryName, "skibidipopTests")
     }
+
+    // MARK: - CurrentBranch
+
+    func testCurrentBranch_givenRepoDoesNotExist_returnsNil() {
+        XCTAssertNil(fixture.sut.currentBranch)
+    }
+
+    func testCurrentBranch_givenBranchExists_returnsBranchName() {
+        fixture.sut.initialize()
+
+        // Create a new branch
+        fixture.commandPerformer.run(command: "touch newfile.txt")
+        fixture.sut.add()
+        fixture.sut.commit(with: "commit message")
+        fixture.sut.createBranch(with: "technical/test-branch")
+        fixture.sut.checkout(into: "technical/test-branch")
+        
+        XCTAssertEqual(fixture.sut.currentBranch, "technical/test-branch")
+    }
 }
 
 private extension GitInterpreterTests {

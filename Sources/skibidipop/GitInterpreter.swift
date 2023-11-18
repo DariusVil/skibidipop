@@ -10,7 +10,7 @@ protocol GitInterpreting {
 
     var isRepository: Bool { get }
     var branches: [String] { get }
-    var currentBranch: String { get }
+    var currentBranch: String? { get }
     var repositoryName: String? { get }
 }
 
@@ -57,8 +57,11 @@ extension GitInterpreter: GitInterpreting {
         }
     }
 
-    var currentBranch: String {
-        execute(["branch", "--show-current"]).trimmingCharacters(in: .whitespacesAndNewlines)
+    var currentBranch: String? {
+        let result = execute(["branch", "--show-current"])
+            .trimmingCharacters(in: .whitespacesAndNewlines)
+
+        return result.isEmpty ? nil : result
     }
 
     var repositoryName: String? {
