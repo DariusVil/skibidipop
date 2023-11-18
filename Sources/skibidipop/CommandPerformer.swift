@@ -27,7 +27,7 @@ extension CommandPerformer: CommandPerforming {
         task.executableURL = URL(fileURLWithPath: "/bin/bash")
         task.arguments = ["-c", command]
 
-        print("Running command " + command)
+        //print("Running command " + command)
 
         let pipe = Pipe()
         task.standardOutput = pipe
@@ -40,7 +40,7 @@ extension CommandPerformer: CommandPerforming {
 
         let data = pipe.fileHandleForReading.readDataToEndOfFile()
         if let output = String(data: data, encoding: .utf8) {
-            print("output " + output)
+            //print("output " + output)
             return output
         }
 
