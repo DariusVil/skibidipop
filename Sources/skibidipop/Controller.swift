@@ -17,6 +17,10 @@ struct Controller {
 extension Controller: Controlling {
 
     func chain(branch: String) {
+        // Load storage. If no storage then create initial storage
+        // Create new branch, checkout into it, commit changes
+        // Save branch into storage
+
         fatalError("Not implemented")
     }
 
@@ -26,6 +30,7 @@ extension Controller: Controlling {
 
     func list() {
         // Get current branch and repo name
+        // Load storage
         // Use them to find chain
         // Print the chain
 
