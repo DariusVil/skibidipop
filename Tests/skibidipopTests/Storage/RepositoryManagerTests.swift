@@ -1,10 +1,10 @@
 import XCTest
 @testable import skibidipop
 
-final class StorageManagerTests: XCTestCase {
+final class RepositoryManagerTests: XCTestCase {
 
     func testAppend_whenCurrentBranchIsNotInAnyChain_shouldCreateNewChainAndAddNewBranchToIt() {
-        let sut =  StorageManager()
+        let sut =  RepositoryManager()
 
         let repository = Repository.build(chains: [], name: "repo")
         let result = sut.append(Branch(name: "new-branch"), onto: Branch(name: "old-branch"), into: repository)
@@ -13,7 +13,7 @@ final class StorageManagerTests: XCTestCase {
     }
 
     func testAppend_whenCurrentBrancIsInchain_shouldAppendNewBranchToThatChain() {
-        let sut = StorageManager()
+        let sut = RepositoryManager()
 
         let repository = Repository.build(
             chains: [

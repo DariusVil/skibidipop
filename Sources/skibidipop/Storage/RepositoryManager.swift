@@ -1,12 +1,10 @@
-protocol StorageManaging {
+protocol RepositoryManaging {
     func append(_ newBranch: Branch, onto currentBranch: Branch, into repository: Repository) -> Repository
 }
 
-struct StorageManager {
+struct RepositoryManager {}
 
-}
-
-extension StorageManager: StorageManaging {
+extension RepositoryManager: RepositoryManaging {
 
     func append(_ newBranch: Branch, onto currentBranch: Branch, into repository: Repository) -> Repository {
         var repository = repository
