@@ -1,7 +1,7 @@
 struct Repository: Equatable {
 
     let name: String
-    let chains: [Chain]
+    var chains: [Chain]
 
     init(chains: [Chain], name: String) {
         self.chains = chains

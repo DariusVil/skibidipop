@@ -33,7 +33,7 @@ extension Controller: Controlling {
                     Repository(chains: [.init(branches: [.init(name: branch)])], name: repositoryName)
                 ]
             )
-            storageWorker2.save(initialStorage)
+            storageWorker.save(initialStorage)
         } 
 
         gitInterpreter.checkout(into: branch)

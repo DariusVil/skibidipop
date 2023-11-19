@@ -1,6 +1,6 @@
 struct Chain: Equatable {
 
-    let branches: [Branch]
+    var branches: [Branch]
 
     init(branches: [Branch]) {
         self.branches = branches
