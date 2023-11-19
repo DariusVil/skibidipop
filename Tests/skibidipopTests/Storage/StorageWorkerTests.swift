@@ -2,7 +2,7 @@ import Foundation
 @testable import skibidipop
 import XCTest
 
-final class StorageManagerTests: XCTestCase {
+final class StorageWorkerTests: XCTestCase {
 
     private let storagePathProviderStub = StoragePathProvidingStub()
     private let fileManager = FileManager.default
@@ -12,7 +12,7 @@ final class StorageManagerTests: XCTestCase {
     }
 
     func testSave_createsDirectoryAndFileAtStoragePath() {
-        let sut = StorageManager(storagePathProvider: storagePathProviderStub)
+        let sut = StorageWorker(storagePathProvider: storagePathProviderStub)
 
         let storage = Storage.build()
 
@@ -22,7 +22,7 @@ final class StorageManagerTests: XCTestCase {
     }
 
      func testLoad_loadsJSONContents() {
-        let sut = StorageManager(storagePathProvider: storagePathProviderStub)
+        let sut = StorageWorker(storagePathProvider: storagePathProviderStub)
 
         let storage = Storage.build(
             repositories: [.build(chains: [.build(branches: [.build(name: "branchName")])])]

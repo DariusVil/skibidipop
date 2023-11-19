@@ -11,7 +11,7 @@ struct Controller {
     let gitInterpreter: GitInterpreting
     let presenter: Presenting
     let printer: Printing
-    let storageManager: StorageManaging
+    let storageWorker: StorageWorking
 }
 
 extension Controller: Controlling {
@@ -22,18 +22,23 @@ extension Controller: Controlling {
             return
         }
 
+        if let storage = storageWorker.load() {
+            if storage.repositories.contains { $0.name == repositoryName } {
+
+            }
+            // need to update find current chain here, update it with a new branch and save it
+        } else {
+            let initialStorage = Storage(
+                repositories: [
+                    Repository(chains: [.init(branches: [.init(name: branch)])], name: repositoryName)
+                ]
+            )
+            storageWorker2.save(initialStorage)
+        } 
 
         gitInterpreter.checkout(into: branch)
         gitInterpreter.add()
         gitInterpreter.commit(with: branch)
-
-        let storage = storageManager.load()
-        if storage == nil {
-            let initialStorage = Storage(repositories: [Repository(chains: [.init(branches: [.init(name: branch)])], name: repositoryName)])
-            storageManager.save(initialStorage)
-        } else {
-            // need to update find current chain here, update it with a new branch and save it
-        }
     }
 
     func sync() {
