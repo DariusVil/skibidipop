@@ -1,5 +1,7 @@
 TODO:
 
+- [ ] Fix build warnings 
+
 - [ ] Add documentation
 - [ ] Implement chain
 - [ ] Implement sync
