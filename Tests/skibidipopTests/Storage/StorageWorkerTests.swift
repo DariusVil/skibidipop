@@ -30,7 +30,6 @@ final class StorageWorkerTests: XCTestCase {
 
         sut.save(storage)
 
-        let expectation = XCTestExpectation(description: "Should load")
         let loadedStorage = sut.load()
 
         XCTAssertEqual(loadedStorage, storage)     
