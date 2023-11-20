@@ -23,19 +23,31 @@ extension Controller: Controlling {
             return
         }
 
-        if let storage = storageWorker.load() {
-            if storage.repositories.contains(where: { $0.name == repositoryName }) {
-        
-            }
-            // need to update find current chain here, update it with a new branch and save it
-        } else {
-            let initialStorage = Storage(
-                repositories: [
-                    Repository(chains: [.init(branches: [.init(name: branch)])], name: repositoryName)
-                ]
-            )
-            storageWorker.save(initialStorage)
-        } 
+        guard let currentBranchName = gitInterpreter.currentBranch else {
+            printer.print("Cant checkout from current branch")
+            return
+        }
+
+        let currentBranch = Branch(name: currentBranchName)
+        let newBranch = Branch(name: branch)
+
+        var storage = storageWorker.load() ?? Storage(repositories: [.init(chains: [], name: repositoryName)])
+
+        var updatedRepository: Repository {
+            if let repository = storage.repositories.first(where: { $0.name == repositoryName }) {
+                return repositoryManager.append(
+                    newBranch,
+                    onto: currentBranch,
+                    into: repository
+                ) 
+            } else {
+                return Repository(chains: [.init(branches: [newBranch])], name: repositoryName)
+            } 
+        }
+
+        storage.append(repository: updatedRepository)
+
+        storageWorker.save(storage)
 
         gitInterpreter.checkout(into: branch)
         gitInterpreter.add()
