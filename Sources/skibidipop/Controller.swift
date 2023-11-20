@@ -12,6 +12,7 @@ struct Controller {
     let presenter: Presenting
     let printer: Printing
     let storageWorker: StorageWorking
+    let repositoryManager: RepositoryManager
 }
 
 extension Controller: Controlling {
@@ -23,8 +24,8 @@ extension Controller: Controlling {
         }
 
         if let storage = storageWorker.load() {
-            if storage.repositories.contains { $0.name == repositoryName } {
-
+            if storage.repositories.contains(where: { $0.name == repositoryName }) {
+        
             }
             // need to update find current chain here, update it with a new branch and save it
         } else {

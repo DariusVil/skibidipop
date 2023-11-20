@@ -5,8 +5,13 @@ struct CompositionRoot {
             gitInterpreter: gitInterpreter,
             presenter: presenter,
             printer: printer,
-            storageWorker: storageWorker
+            storageWorker: storageWorker,
+            repositoryManager: repositoryManager
         ) 
+    }
+
+    private static var repositoryManager: RepositoryManager {
+        RepositoryManager()
     }
 
     private static var storageWorker: StorageWorking {
