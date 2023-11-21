@@ -31,7 +31,7 @@ struct CompositionRoot {
     }
 
     private static var gitInterpreter: GitInterpreting {
-        GitInterpreter(commandPeformer: commandPerformer)
+        GitInterpreter(commandPerformer: commandPerformer)
     }
 
     private static var commandPerformer: CommandPerforming {

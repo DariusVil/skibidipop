@@ -15,7 +15,7 @@ protocol GitInterpreting {
 }
 
 struct GitInterpreter {
-    let commandPeformer: CommandPerforming
+    let commandPerformer: CommandPerforming
 }
 
 extension GitInterpreter: GitInterpreting {
@@ -65,7 +65,7 @@ extension GitInterpreter: GitInterpreting {
     }
 
     var repositoryName: String? {
-        let result = commandPeformer.run(command: "basename `git rev-parse --show-toplevel`")
+        let result = commandPerformer.run(command: "basename `git rev-parse --show-toplevel`")
             .trimmingCharacters(in: .whitespacesAndNewlines)
 
         return result.isEmpty ? nil : result
@@ -75,6 +75,6 @@ extension GitInterpreter: GitInterpreting {
 extension GitInterpreter {
     @discardableResult
     private func execute(_ arguments: [String]) -> String {
-        commandPeformer.run(command: "git " + arguments.joined(separator: " "))
+        commandPerformer.run(command: "git " + arguments.joined(separator: " "))
     }
 }

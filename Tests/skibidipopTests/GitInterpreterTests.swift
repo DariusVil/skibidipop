@@ -145,6 +145,6 @@ private struct Fixture {
     init() {
         commandPerformer = CommandPerformer()
         commandPerformer.setWorkingDirectory(into: URL(fileURLWithPath: workingDirectory))
-        sut = GitInterpreter(commandPeformer: commandPerformer)
+        sut = GitInterpreter(commandPerformer: commandPerformer)
     }
 }
