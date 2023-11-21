@@ -45,7 +45,7 @@ extension Controller: Controlling {
             } 
         }
 
-        storage.append(repository: updatedRepository)
+        storage.inject(updatedRepository)
 
         storageWorker.save(storage)
 

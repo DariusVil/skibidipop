@@ -16,7 +16,7 @@ extension Storage: Codable {
 
 extension Storage {
     
-    mutating func append(repository: Repository) {
+    mutating func inject(_ repository: Repository) {
         if let repositoryIndex = repositories.firstIndex(where: { $0.name == repository.name }) {
             repositories[repositoryIndex] = repository
         } else {
