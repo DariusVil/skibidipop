@@ -3,7 +3,16 @@ import XCTest
 
 final class ControllerTests: XCTestCase {
 
+    func testChain_whenNotInRepository_shouldPrintError() {
+        let fixture = Fixture()
+        fixture.gitInterpreterMock.repositoryNameReturnValue = nil
 
+        fixture.sut.chain(branch: "ios/branchey")
+        XCTAssertEqual(
+            fixture.printerMock.printReceivedValue, 
+            "Repository not found"
+        )
+    }
 }
 
 private struct Fixture {
@@ -31,7 +40,7 @@ private struct Fixture {
     }
 }
 
-private struct GitInterpretingMock: GitInterpreting {
+private class GitInterpretingMock: GitInterpreting {
 
     func initialize() {}
     func createBranch(with name: String) {}
@@ -53,7 +62,7 @@ private struct GitInterpretingMock: GitInterpreting {
     var repositoryName: String? { repositoryNameReturnValue }
 }
 
-private struct PresentingMock: Presenting {
+private class PresentingMock: Presenting {
 
     var formatReturnValue: String = ""
     func format(_ chain: Chain, selectedBranch: Branch) -> String {
@@ -61,13 +70,15 @@ private struct PresentingMock: Presenting {
     } 
 } 
 
-private struct PrintingMock: Printing {
+private class PrintingMock: Printing {
 
+    var printReceivedValue: String? = nil
     func print(_ string: String) {
+        printReceivedValue = string
     }
 }
 
-private struct StorageWorkingMock: StorageWorking {
+private class StorageWorkingMock: StorageWorking {
 
     func save(_ storage: Storage) {}
 
@@ -77,7 +88,7 @@ private struct StorageWorkingMock: StorageWorking {
     }
 }
 
-private struct RepositoryManagingMock: RepositoryManaging {
+private class RepositoryManagingMock: RepositoryManaging {
 
     var appendReturnValue: Repository = .build()
     func append(_ newBranch: Branch, onto currentBranch: Branch, into repository: Repository) -> Repository {
