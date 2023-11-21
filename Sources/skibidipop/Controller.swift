@@ -12,7 +12,7 @@ struct Controller {
     let presenter: Presenting
     let printer: Printing
     let storageWorker: StorageWorking
-    let repositoryManager: RepositoryManager
+    let repositoryManager: RepositoryManaging
 }
 
 extension Controller: Controlling {

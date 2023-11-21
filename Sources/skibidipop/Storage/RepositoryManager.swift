@@ -1,12 +1,16 @@
 protocol RepositoryManaging {
-    func append(_ newBranch: Branch, onto currentBranch: Branch, into repository: Repository) -> Repository
+    func append(_ newBranch: Branch,
+                onto currentBranch: Branch,
+                into repository: Repository) -> Repository
 }
 
 struct RepositoryManager {}
 
 extension RepositoryManager: RepositoryManaging {
 
-    func append(_ newBranch: Branch, onto currentBranch: Branch, into repository: Repository) -> Repository {
+    func append(_ newBranch: Branch,
+                onto currentBranch: Branch,
+                into repository: Repository) -> Repository {
         var repository = repository
 
 
