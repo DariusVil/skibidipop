@@ -82,6 +82,35 @@ final class ControllerTests: XCTestCase {
             "Can't load skibidibop configuration. You need to `chain` first"
         )
     }
+
+    func testList_givenStorageIsLoaded_printsTheCurrentChain() {
+        let fixture = Fixture()
+        fixture.gitInterpreterMock.repositoryNameReturnValue = "Repo"
+        fixture.gitInterpreterMock.currentBranchReturnValue = "feature-api"
+        fixture.storageWorkerMock.loadReturnValue = .build(
+            repositories: [
+                .build(
+                    chains: [
+                        .build(
+                            branches: [
+                                .build(name: "master"),
+                                .build(name: "feature-api"),
+                                .build(name: "feature-ui")
+                            ]
+                        )
+                    ],
+                    name: "Repo"
+                )
+            ]
+        )
+
+        fixture.sut.list()
+
+        XCTAssertEqual(
+            fixture.printerMock.printReceivedValue,
+            "Can't load skibidibop configuration. You need to `chain` first"
+        )
+    }
 }
 
 private struct Fixture {

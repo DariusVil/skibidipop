@@ -73,14 +73,19 @@ extension Controller: Controlling {
             printer.print("Can't load skibidibop configuration. You need to `chain` first")
             return
         }
-        // Get current branch and repo name
-        // Load storage
-        // Use them to find chain
-        // Print the chain
 
-        //guard let 
+        guard let repository = storage.repositories.first(where: { $0.name == repositoryName }) else {
+            return
+        }
 
-        fatalError("Not implemented")
+        guard let currentChain = repositoryManager.chain(in: repository, with: Branch(name: currentBranchName)) else {
+            printer.print("skibidibop configuration is messed up")
+            return
+        }
+
+        let string = presenter.format(currentChain, selectedBranch: Branch(name: currentBranchName))
+
+        printer.print(string)
     }
 
     func rebase() {
