@@ -59,10 +59,26 @@ extension Controller: Controlling {
     }
 
     func list() {
+        guard let repositoryName = gitInterpreter.repositoryName else {
+            printer.print("Repository not found")
+            return
+        }
+
+        guard let currentBranchName = gitInterpreter.currentBranch else {
+            printer.print("Cant find current branch")
+            return
+        }
+
+        guard let storage = storageWorker.load() else {
+            printer.print("")
+            return
+        }
         // Get current branch and repo name
         // Load storage
         // Use them to find chain
         // Print the chain
+
+        //guard let 
 
         fatalError("Not implemented")
     }

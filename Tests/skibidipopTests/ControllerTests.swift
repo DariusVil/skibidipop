@@ -47,6 +47,27 @@ final class ControllerTests: XCTestCase {
         fixture.sut.chain(branch: "ios/branchey")
         XCTAssert(fixture.storageWorkerMock.saveCalled)
     }
+
+    // MARK: - list
+
+    func testList_givenNotOnRepository_shouldPrintAntError() {
+        let fixture = Fixture()
+        fixture.gitInterpreterMock.repositoryNameReturnValue = nil
+
+        fixture.sut.list()
+
+        XCTAssertEqual(fixture.printerMock.printReceivedValue, "Repository not found")
+    }
+
+    func testList_givenNoCurrentBranch_shouldPrintAntError() {
+        let fixture = Fixture()
+        fixture.gitInterpreterMock.repositoryNameReturnValue = "Repo"
+        fixture.gitInterpreterMock.currentBranchReturnValue = nil
+
+        fixture.sut.list()
+
+        XCTAssertEqual(fixture.printerMock.printReceivedValue, "Cant find current branch")
+    }
 }
 
 private struct Fixture {
