@@ -179,4 +179,9 @@ private class RepositoryManagingMock: RepositoryManaging {
     func append(_ newBranch: Branch, onto currentBranch: Branch, into repository: Repository) -> Repository {
         appendReturnValue
     } 
+
+    var chainReturnValue: Chain? = nil
+    func chain(in repository: Repository, with branch: Branch) -> Chain? {
+        chainReturnValue
+    }
 }

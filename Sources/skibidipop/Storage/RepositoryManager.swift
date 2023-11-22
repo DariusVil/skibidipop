@@ -2,6 +2,7 @@ protocol RepositoryManaging {
     func append(_ newBranch: Branch,
                 onto currentBranch: Branch,
                 into repository: Repository) -> Repository
+    func chain(in repository: Repository, with branch: Branch) -> Chain?
 }
 
 struct RepositoryManager {}
@@ -27,5 +28,11 @@ extension RepositoryManager: RepositoryManaging {
             repository.chains.append(.init(branches: [newBranch]))
             return repository
         }
+    }
+
+    func chain(in repository: Repository, with branch: Branch) -> Chain? {
+        repository.chains.first(where: { chain in
+            chain.branches.contains(where: { $0 == branch }) 
+        })
     }
 }
