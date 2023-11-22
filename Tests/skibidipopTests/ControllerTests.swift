@@ -28,12 +28,26 @@ final class ControllerTests: XCTestCase {
         )
     }
 
-    func testChain_whenRepositoryAndBranchExists_shouldCheckoutCommitChanges() {
+    func testChain_whenSuchBranchAlreadyExists_shouldPrintError() {
+        let fixture = Fixture()
+        fixture.gitInterpreterMock.repositoryNameReturnValue = "Repo"
+        fixture.gitInterpreterMock.currentBranchReturnValue = "master"
+        fixture.gitInterpreterMock.branchesReturnValue = ["ios/branchey"]
+
+        fixture.sut.chain(branch: "ios/branchey")
+        XCTAssertEqual(
+            fixture.printerMock.printReceivedValue,
+            "Branch with such name already exists in the repository"
+        )
+    }
+
+    func testChain_whenRepositoryAndBranchExists_shouldCreatebranchCheckoutCommitChanges() {
         let fixture = Fixture()
         fixture.gitInterpreterMock.repositoryNameReturnValue = "Repo"
         fixture.gitInterpreterMock.currentBranchReturnValue = "master"
 
         fixture.sut.chain(branch: "ios/branchey")
+        XCTAssert(fixture.gitInterpreterMock.createBranchCalled)
         XCTAssert(fixture.gitInterpreterMock.checkoutCalled)
         XCTAssert(fixture.gitInterpreterMock.addCalled)
         XCTAssert(fixture.gitInterpreterMock.commitCalled)
@@ -145,7 +159,11 @@ private struct Fixture {
 private class GitInterpretingMock: GitInterpreting {
 
     func initialize() {}
-    func createBranch(with name: String) {}
+
+    var createBranchCalled = false
+    func createBranch(with name: String) {
+        createBranchCalled = true
+    }
 
     var checkoutCalled = false
     func checkout(into branchName: String) {

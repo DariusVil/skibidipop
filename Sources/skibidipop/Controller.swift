@@ -28,6 +28,11 @@ extension Controller: Controlling {
             return
         }
 
+        guard !gitInterpreter.branches.contains(where: { $0 == branch }) else {
+            printer.print("Branch with such name already exists in the repository")
+            return
+        }
+
         let currentBranch = Branch(name: currentBranchName)
         let newBranch = Branch(name: branch)
 
@@ -49,6 +54,7 @@ extension Controller: Controlling {
 
         storageWorker.save(storage)
 
+        gitInterpreter.createBranch(with: branch)
         gitInterpreter.checkout(into: branch)
         gitInterpreter.add()
         gitInterpreter.commit(with: branch)
