@@ -38,6 +38,15 @@ final class ControllerTests: XCTestCase {
         XCTAssert(fixture.gitInterpreterMock.addCalled)
         XCTAssert(fixture.gitInterpreterMock.commitCalled)
     }
+
+    func testChain_whenRepositoryAndBranchExists_shouldSaveRepository() {
+        let fixture = Fixture()
+        fixture.gitInterpreterMock.repositoryNameReturnValue = "Repo"
+        fixture.gitInterpreterMock.currentBranchReturnValue = "master"
+
+        fixture.sut.chain(branch: "ios/branchey")
+        XCTAssert(fixture.storageWorkerMock.saveCalled)
+    }
 }
 
 private struct Fixture {
@@ -118,7 +127,10 @@ private class PrintingMock: Printing {
 
 private class StorageWorkingMock: StorageWorking {
 
-    func save(_ storage: Storage) {}
+    var saveCalled = false
+    func save(_ storage: Storage) {
+        saveCalled = true
+    }
 
     var loadReturnValue: Storage? = nil
     func load() -> Storage? {
