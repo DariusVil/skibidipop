@@ -68,6 +68,20 @@ final class ControllerTests: XCTestCase {
 
         XCTAssertEqual(fixture.printerMock.printReceivedValue, "Cant find current branch")
     }
+
+    func testList_givenCantLoadStorage_shouldPrintAnError() {
+        let fixture = Fixture()
+        fixture.gitInterpreterMock.repositoryNameReturnValue = "Repo"
+        fixture.gitInterpreterMock.currentBranchReturnValue = "master"
+        fixture.storageWorkerMock.loadReturnValue = nil
+
+        fixture.sut.list()
+
+        XCTAssertEqual(
+            fixture.printerMock.printReceivedValue,
+            "Can't load skibidibop configuration. You need to `chain` first"
+        )
+    }
 }
 
 private struct Fixture {

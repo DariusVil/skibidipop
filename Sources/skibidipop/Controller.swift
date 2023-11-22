@@ -70,7 +70,7 @@ extension Controller: Controlling {
         }
 
         guard let storage = storageWorker.load() else {
-            printer.print("")
+            printer.print("Can't load skibidibop configuration. You need to `chain` first")
             return
         }
         // Get current branch and repo name
