@@ -3,6 +3,8 @@ import XCTest
 
 final class ControllerTests: XCTestCase {
 
+    // MARK: - chain
+
     func testChain_whenNotInRepository_shouldPrintError() {
         let fixture = Fixture()
         fixture.gitInterpreterMock.repositoryNameReturnValue = nil
@@ -24,6 +26,17 @@ final class ControllerTests: XCTestCase {
             fixture.printerMock.printReceivedValue, 
             "Cant checkout from current branch"
         )
+    }
+
+    func testChain_whenRepositoryAndBranchExists_shouldCheckoutCommitChanges() {
+        let fixture = Fixture()
+        fixture.gitInterpreterMock.repositoryNameReturnValue = "Repo"
+        fixture.gitInterpreterMock.currentBranchReturnValue = "master"
+
+        fixture.sut.chain(branch: "ios/branchey")
+        XCTAssert(fixture.gitInterpreterMock.checkoutCalled)
+        XCTAssert(fixture.gitInterpreterMock.addCalled)
+        XCTAssert(fixture.gitInterpreterMock.commitCalled)
     }
 }
 
@@ -56,10 +69,23 @@ private class GitInterpretingMock: GitInterpreting {
 
     func initialize() {}
     func createBranch(with name: String) {}
-    func checkout(into branchName: String) {}
+
+    var checkoutCalled = false
+    func checkout(into branchName: String) {
+        checkoutCalled = true
+    }
+
     func rebase(onto branch: String) {}
-    func commit(with message: String) {}
-    func add() {}
+
+    var commitCalled = false
+    func commit(with message: String) {
+        commitCalled = true
+    }
+
+    var addCalled = false
+    func add() {
+        addCalled = true
+    }
 
     var isRepositoryReturnValue = false
     var isRepository: Bool { isRepositoryReturnValue }
