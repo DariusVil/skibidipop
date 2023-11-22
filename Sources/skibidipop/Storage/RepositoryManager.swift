@@ -31,14 +31,7 @@ extension RepositoryManager: RepositoryManaging {
     }
 
     func chain(in repository: Repository, with branch: Branch) -> Chain? {
-        print("#####")
-        print(repository)
-        print(branch)
-        print("#####")
-        fatalError("")
-        return Chain(branches: [])
-
-        return repository.chains.first(where: { chain in
+        repository.chains.first(where: { chain in
             chain.branches.contains(where: { $0.name == branch.name }) 
         })
     }
