@@ -13,6 +13,18 @@ final class ControllerTests: XCTestCase {
             "Repository not found"
         )
     }
+
+    func testChain_whenRepositoryExistsButCanGetBranch_shouldPrintError() {
+        let fixture = Fixture()
+        fixture.gitInterpreterMock.repositoryNameReturnValue = "Repo"
+        fixture.gitInterpreterMock.currentBranchReturnValue = nil
+
+        fixture.sut.chain(branch: "ios/branchey")
+        XCTAssertEqual(
+            fixture.printerMock.printReceivedValue, 
+            "Cant checkout from current branch"
+        )
+    }
 }
 
 private struct Fixture {
