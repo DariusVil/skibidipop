@@ -1,6 +1,6 @@
-![swift workflow](https://github.com/github/docs/actions/workflows/main.yml/badge.svg)
-TODO:
+[![Skibidipop](https://github.com/DariusVil/skibidipop/actions/workflows/swift.yml/badge.svg?branch=main)](https://github.com/DariusVil/skibidipop/actions/workflows/swift.yml)
 
+TODO
 
 - [ ] Include master branch in chains when chaining
 - [ ] Make entry point testable
