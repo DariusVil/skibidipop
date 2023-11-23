@@ -14,7 +14,7 @@ Skibidipop requires [Swift compiler](https://www.swift.org/download/) to be buil
 ./install.sh
 ```
 
-This script will build the binary and move it to `/usr/local/bin` if you give it permission to do that. You probably already have that folder in your path and can execute Skibidipop
+This script will build the binary and move it to `/usr/local/bin` if you give it permission to do that. Likely you already have it in your path and can execute `skibidipop`
 ```Swift
 skibidipop <command> [<branch name>]
 ```
