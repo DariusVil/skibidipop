@@ -37,17 +37,25 @@ extension Controller: Controlling {
         let currentBranch = Branch(name: currentBranchName)
         let newBranch = Branch(name: branch)
 
-        var storage = storageWorker.load() ?? Storage(repositories: [.init(chains: [], name: repositoryName)])
+        var storage = storageWorker.load() ?? Storage(
+            repositories: [.init(chains: [], name: repositoryName)]
+        )
 
         var updatedRepository: Repository {
-            if let repository = storage.repositories.first(where: { $0.name == repositoryName }) {
+            let repository = storage.repositories.first { 
+                $0.name == repositoryName 
+            }
+            if let repository {
                 return repositoryManager.append(
                     newBranch,
                     onto: currentBranch,
                     into: repository
                 ) 
             } else {
-                return Repository(chains: [.init(branches: [newBranch])], name: repositoryName)
+                return Repository(
+                    chains: [.init(branches: [newBranch])],
+                    name: repositoryName
+                )
             } 
         }
 
@@ -81,16 +89,26 @@ extension Controller: Controlling {
             return
         }
 
-        guard let repository = storage.repositories.first(where: { $0.name == repositoryName }) else {
+        let repository = storage.repositories.first { 
+            $0.name == repositoryName 
+        } 
+        guard let repository = repository else {
             return
         }
 
-        guard let currentChain = repositoryManager.chain(in: repository, with: Branch(name: currentBranchName)) else {
+        let currentChain = repositoryManager.chain(
+            in: repository, 
+            with: Branch(name: currentBranchName)
+        )
+        guard let currentChain else {
             printer.print("skibidibop configuration is messed up")
             return
         }
 
-        let string = presenter.format(currentChain, selectedBranch: Branch(name: currentBranchName))
+        let string = presenter.format(
+            currentChain,
+            selectedBranch: Branch(name: currentBranchName)
+        )
 
         printer.print(string)
     }

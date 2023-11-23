@@ -8,6 +8,7 @@ protocol StoragePathProviding {
 struct StoragePathPathProvider: StoragePathProviding {
 
     var path: URL {
-        FileManager.default.homeDirectoryForCurrentUser.appendingPathComponent(".skibidipop")
+        FileManager.default.homeDirectoryForCurrentUser
+            .appendingPathComponent(".skibidipop")
     }
 }

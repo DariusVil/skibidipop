@@ -29,7 +29,10 @@ extension StorageWorker: StorageWorking {
             let path = storagePathProvider.path
 
             if !fileManager.fileExists(atPath: path.path) {
-                try fileManager.createDirectory(atPath: path.path, withIntermediateDirectories: true)
+                try fileManager.createDirectory(
+                    atPath: path.path,
+                    withIntermediateDirectories: true
+                )
             }
 
             let jsonEncoder = JSONEncoder()
@@ -50,14 +53,18 @@ extension StorageWorker: StorageWorking {
     }
 
     func load() -> Storage? {
-        let path = storagePathProvider.path.appendingPathComponent("storage.json").path
+        let path = storagePathProvider.path
+            .appendingPathComponent("storage.json").path
 
         guard FileManager.default.fileExists(atPath: path) else {
             return nil
         }
 
         do {
-            let data = try Data(contentsOf: URL(fileURLWithPath: path), options: .mappedIfSafe)
+            let data = try Data(
+                contentsOf: URL(fileURLWithPath: path),
+                options: .mappedIfSafe
+            )
             let decoder = JSONDecoder()
             let storage = try decoder.decode(Storage.self, from: data)
 

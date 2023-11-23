@@ -75,6 +75,8 @@ extension GitInterpreter: GitInterpreting {
 extension GitInterpreter {
     @discardableResult
     private func execute(_ arguments: [String]) -> String {
-        commandPerformer.run(command: "git " + arguments.joined(separator: " "))
+        commandPerformer.run(
+            command: "git " + arguments.joined(separator: " ")
+        )
     }
 }

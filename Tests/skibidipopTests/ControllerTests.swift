@@ -70,7 +70,10 @@ final class ControllerTests: XCTestCase {
 
         fixture.sut.list()
 
-        XCTAssertEqual(fixture.printerMock.printReceivedValue, "Repository not found")
+        XCTAssertEqual(
+            fixture.printerMock.printReceivedValue,
+            "Repository not found"
+        )
     }
 
     func testList_givenNoCurrentBranch_shouldPrintAntError() {
@@ -80,7 +83,10 @@ final class ControllerTests: XCTestCase {
 
         fixture.sut.list()
 
-        XCTAssertEqual(fixture.printerMock.printReceivedValue, "Cant find current branch")
+        XCTAssertEqual(
+            fixture.printerMock.printReceivedValue,
+            "Cant find current branch"
+        )
     }
 
     func testList_givenCantLoadStorage_shouldPrintAnError() {
@@ -234,7 +240,9 @@ private class StorageWorkingMock: StorageWorking {
 private class RepositoryManagingMock: RepositoryManaging {
 
     var appendReturnValue: Repository = .build()
-    func append(_ newBranch: Branch, onto currentBranch: Branch, into repository: Repository) -> Repository {
+    func append(_ newBranch: Branch,
+        onto currentBranch: Branch,
+        into repository: Repository) -> Repository {
         appendReturnValue
     } 
 

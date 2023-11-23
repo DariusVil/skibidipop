@@ -34,13 +34,29 @@ final class StorageDecodingTests: XCTestCase {
         let data = Data(json.utf8)
 
         let decoder = JSONDecoder()
-        guard let storage: Storage = try? decoder.decode(Storage.self, from: data) else {
+        let storage: Storage? = try? decoder.decode(
+            Storage.self,
+            from: data
+        )
+        guard let storage else {
             fatalError("Failed to parse JSON")
         }
 
-        XCTAssertEqual(storage.repositories[0].chains[0].branches[0].name, "main")
-        XCTAssertEqual(storage.repositories[0].chains[0].branches[1].name, "firstChange")
-        XCTAssertEqual(storage.repositories[0].chains[0].branches[2].name, "secondChange")
-        XCTAssertEqual(storage.repositories[0].chains[0].branches[3].name, "thirdChange")
+        XCTAssertEqual(
+            storage.repositories[0].chains[0].branches[0].name,
+            "main"
+        )
+        XCTAssertEqual(
+            storage.repositories[0].chains[0].branches[1].name, 
+            "firstChange"
+        )
+        XCTAssertEqual(
+            storage.repositories[0].chains[0].branches[2].name,
+            "secondChange"
+        )
+        XCTAssertEqual(
+            storage.repositories[0].chains[0].branches[3].name,
+            "thirdChange"
+        )
     }
 }

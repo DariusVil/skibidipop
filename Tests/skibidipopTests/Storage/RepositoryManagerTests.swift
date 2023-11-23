@@ -9,7 +9,11 @@ final class RepositoryManagerTests: XCTestCase {
         let sut =  RepositoryManager()
 
         let repository = Repository.build(chains: [], name: "repo")
-        let result = sut.append(Branch(name: "new-branch"), onto: Branch(name: "old-branch"), into: repository)
+        let result = sut.append(
+            Branch(name: "new-branch"), 
+            onto: Branch(name: "old-branch"),
+            into: repository
+        )
 
         XCTAssertEqual(result.chains[0].branches[0].name, "new-branch")
     }
@@ -32,7 +36,11 @@ final class RepositoryManagerTests: XCTestCase {
             ],
             name: "repo"
         )
-        let result = sut.append(Branch(name: "new-branch"), onto: Branch(name: "redesign"), into: repository)
+        let result = sut.append(
+            Branch(name: "new-branch"),
+            onto: Branch(name: "redesign"),
+            into: repository
+        )
 
         XCTAssertEqual(result.chains[1].branches[1].name, "new-branch")
     }
@@ -52,10 +60,20 @@ final class RepositoryManagerTests: XCTestCase {
     func testChain_whenRepositoryContainsBranch_returnsThatBranch() {
         let sut = RepositoryManager()
 
-        let chain = Chain.build(branches: [.build(name: "feature1"), .build(name: "feature2")])
+        let chain = Chain.build(
+            branches: [
+                .build(name: "feature1"),
+                .build(name: "feature2")
+            ]
+        )
         let repository = Repository.build(
             chains: [
-                .build(branches: [.build(name: "master"), .build(name: "develop")]),
+                .build(
+                    branches: [
+                        .build(name: "master"),
+                        .build(name: "develop")
+                    ]
+                ),
                 chain 
             ]
         )

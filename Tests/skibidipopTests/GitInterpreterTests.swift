@@ -74,7 +74,9 @@ final class GitInterpreterTests: XCTestCase {
 
         fixture.sut.rebase(onto: "main")
 
-        let commitDiff = fixture.commandPerformer.run(command: "git log technical/test-branch..main")
+        let commitDiff = fixture.commandPerformer.run(
+            command: "git log technical/test-branch..main"
+        )
         XCTAssert(commitDiff.isEmpty)
     }
 
@@ -106,7 +108,10 @@ final class GitInterpreterTests: XCTestCase {
         fixture.sut.createBranch(with: "technical/test-branch")
         fixture.sut.checkout(into: "technical/test-branch")
         
-        XCTAssertEqual(fixture.sut.currentBranch, "technical/test-branch")
+        XCTAssertEqual(
+            fixture.sut.currentBranch,
+            "technical/test-branch"
+        )
     }
 }
 
@@ -144,7 +149,9 @@ private struct Fixture {
 
     init() {
         commandPerformer = CommandPerformer()
-        commandPerformer.setWorkingDirectory(into: URL(fileURLWithPath: workingDirectory))
+        commandPerformer.setWorkingDirectory(
+            into: URL(fileURLWithPath: workingDirectory)
+        )
         sut = GitInterpreter(commandPerformer: commandPerformer)
     }
 }

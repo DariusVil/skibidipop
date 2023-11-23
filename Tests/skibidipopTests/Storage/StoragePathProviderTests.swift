@@ -8,7 +8,8 @@ final class StoragePathProviderTests: XCTestCase {
 
         XCTAssertEqual(
             path.path,
-            FileManager.default.homeDirectoryForCurrentUser.path + #"/.skibidipop"#
+            FileManager.default.homeDirectoryForCurrentUser
+            .path + #"/.skibidipop"#
         )
     }
 }

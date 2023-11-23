@@ -22,15 +22,18 @@ extension RepositoryManager: RepositoryManaging {
         })
 
         if let currentChainIndex {
-            repository.chains[currentChainIndex].branches.append(newBranch)
+            repository.chains[currentChainIndex].branches
+                .append(newBranch)
             return repository
         } else {
-            repository.chains.append(.init(branches: [newBranch]))
+            repository.chains
+                .append(.init(branches: [newBranch]))
             return repository
         }
     }
 
-    func chain(in repository: Repository, with branch: Branch) -> Chain? {
+    func chain(in repository: Repository,
+               with branch: Branch) -> Chain? {
         repository.chains.first(where: { chain in
             chain.branches.contains(where: { $0.name == branch.name }) 
         })
