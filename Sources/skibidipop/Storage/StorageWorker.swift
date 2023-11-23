@@ -7,17 +7,22 @@ protocol StorageWorking {
 
     func save(_ storage: Storage)
     func load() -> Storage?
+    func clean()
 }
 
 struct StorageWorker {
-    private let storagePathProvider: StoragePathProviding
 
-    init(storagePathProvider: StoragePathProviding) {
+    private let storagePathProvider: StoragePathProviding
+    private let printer: Printing
+
+    init(storagePathProvider: StoragePathProviding, printer: Printing) {
         self.storagePathProvider = storagePathProvider
+        self.printer = printer
     }
 }
 
 extension StorageWorker: StorageWorking {
+
     func save(_ storage: Storage) {
         do {
             let fileManager = FileManager.default
@@ -40,7 +45,7 @@ extension StorageWorker: StorageWorking {
                 )
             }
         } catch {
-            print("failed to write")
+            printer.print("Failed to save storage")
         }
     }
 
@@ -59,6 +64,21 @@ extension StorageWorker: StorageWorking {
             return storage
         } catch {
             return nil
+        }
+    }
+
+    func clean() {
+        let path = storagePathProvider.path
+
+        guard FileManager.default.fileExists(atPath: path.path) else {
+            printer.print("There's nothing to cleanup")
+            return
+        }
+
+        do {
+            try FileManager.default.removeItem(atPath: path.path)
+        } catch {
+            printer.print("Failed to cleanup")
         }
     }
 }

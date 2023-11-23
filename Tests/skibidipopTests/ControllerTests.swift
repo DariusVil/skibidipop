@@ -129,6 +129,16 @@ final class ControllerTests: XCTestCase {
             "formatted result"
         )
     }
+
+    // MARK: - nuke
+
+    func testNuke_shouldCallClean() {
+        let fixture = Fixture()
+
+        fixture.sut.nuke()
+
+        XCTAssert(fixture.storageWorkerMock.cleanCalled)
+    }
 }
 
 private struct Fixture {
@@ -203,14 +213,6 @@ private class PresentingMock: Presenting {
     } 
 } 
 
-private class PrintingMock: Printing {
-
-    var printReceivedValue: String? = nil
-    func print(_ string: String) {
-        printReceivedValue = string
-    }
-}
-
 private class StorageWorkingMock: StorageWorking {
 
     var saveCalled = false
@@ -221,6 +223,11 @@ private class StorageWorkingMock: StorageWorking {
     var loadReturnValue: Storage? = nil
     func load() -> Storage? {
         loadReturnValue
+    }
+
+    var cleanCalled = false
+    func clean() {
+        cleanCalled = true
     }
 }
 

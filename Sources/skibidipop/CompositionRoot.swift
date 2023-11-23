@@ -15,7 +15,10 @@ struct CompositionRoot {
     }
 
     private static var storageWorker: StorageWorking {
-        StorageWorker(storagePathProvider: storagePathProvider)
+        StorageWorker(
+            storagePathProvider: storagePathProvider,
+            printer: printer
+        )
     }
 
     private static var storagePathProvider: StoragePathProviding {

@@ -1,7 +1,7 @@
 import ArgumentParser
 
 @main
-struct FigletTool: ParsableCommand {
+struct Skibidipop: ParsableCommand {
 
     static var configuration = CommandConfiguration(
         commandName: "Skibidipop",
@@ -32,6 +32,8 @@ struct FigletTool: ParsableCommand {
                 }
 
                 controller.chain(branch: branchName)
+        case "nuke":
+            controller.nuke()
             default:
                 print("Unknown command")
         }

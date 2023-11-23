@@ -4,6 +4,7 @@ protocol Controlling {
     func sync()
     func list()
     func rebase()
+    func nuke()
 }
 
 struct Controller {
@@ -96,5 +97,9 @@ extension Controller: Controlling {
 
     func rebase() {
         fatalError("Not implemented")
+    }
+
+    func nuke() {
+        storageWorker.clean()
     }
 }
