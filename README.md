@@ -1,17 +1,33 @@
+Skibidipop
+## _Diff stacking tool_
+
 [![Skibidipop](https://github.com/DariusVil/skibidipop/actions/workflows/swift.yml/badge.svg?branch=main)](https://github.com/DariusVil/skibidipop/actions/workflows/swift.yml)
 
-TODO
+Skibidipop is a diff stacking (branch chaining) tool for Git repositories.
 
-- [ ] Include master branch in chains when chaining
-- [ ] Make entry point testable
-- [ ] Add documentation
+ee here is *actually- written in Markdown! To get a feel
+for Markdown's syntax, type some text into the left window and
+watch the results in the right.
 
-- [ ] Implement sync
-- [ ] Implement rebase
+## Installation
 
-Commands:
+Skibidipop requires [Swift compiler](https://www.swift.org/download/) to be built. After you've cloned the repo run:
 
-sp chain "branch name" // Creates branch and commits
-sp sync // Pushes whole branch chain
-sp list // Prints current tree
-sp rebase // Rebases all branches
+```sh
+./install.sh
+```
+
+This script will build the binary and move it to `/usr/local/bin` if you give it permission to do that. You probably already have that folder in your path and can execute Skibidipop
+```Swift
+skibidipop <command> [<branch name>]
+```
+
+## Commands
+
+| Command | Description |
+| ------ | ------ |
+| chain | creates a new branch, checkouts into it, adds and commits any changes. This command requires branch name. |
+| list | lists active chain |
+| rebase | rebases all branches in an active chain from it's oldest branch |
+| sync | pushes all branches in active chain |
+| nuke | cleans all metadata stored in ~/.skibidipop|
