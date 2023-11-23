@@ -1,6 +1,10 @@
 struct CompositionRoot {
 
-    static var controller: Controlling { 
+    static var commandExecutor: CommandExecuting {
+        CommandExecutor(controller: controller, printer: printer)
+    }
+
+    private static var controller: Controlling { 
         Controller(
             gitInterpreter: gitInterpreter,
             presenter: presenter,

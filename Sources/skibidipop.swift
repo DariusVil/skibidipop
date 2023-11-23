@@ -15,28 +15,9 @@ struct Skibidipop: ParsableCommand {
     var branchName: String?
 
     func run() throws {
-        let controller = CompositionRoot.controller
+        let commandExecutor = CompositionRoot.commandExecutor
 
-        switch command {
-            case "sync":
-                controller.sync()
-            case "list":
-                controller.list()
-            case "rebase":
-                controller.rebase()
-            case "chain":
-                guard let branchName else {
-                    print("Please specify branch name")
-
-                    return
-                }
-
-                controller.chain(branch: branchName)
-        case "nuke":
-            controller.nuke()
-            default:
-                print("Unknown command")
-        }
+        commandExecutor.execute(command, branchName: branchName)
     }
 }
 
