@@ -5,7 +5,7 @@ final class RepositoryManagerTests: XCTestCase {
 
     // MARK: - append 
 
-    func testAppend_whenCurrentBranchIsNotInAnyChain_shouldCreateNewChainAndAddNewBranchToIt() {
+    func testAppend_whenCurrentBranchIsNotInAnyChain_shouldCreateNewChainAndAddCurrentAndNewBranchToIt() {
         let sut =  RepositoryManager()
 
         let repository = Repository.build(chains: [], name: "repo")
@@ -15,7 +15,10 @@ final class RepositoryManagerTests: XCTestCase {
             into: repository
         )
 
-        XCTAssertEqual(result.chains[0].branches[0].name, "new-branch")
+        XCTAssertEqual(
+            result.chains[0].branches,
+            [Branch(name: "old-branch"), Branch(name: "new-branch")]
+        )
     }
 
     func testAppend_whenCurrentBrancIsInchain_shouldAppendNewBranchToThatChain() {

@@ -15,11 +15,11 @@ extension RepositoryManager: RepositoryManaging {
         var repository = repository
 
 
-        let currentChainIndex = repository.chains.firstIndex(where: { chain in 
-            chain.branches.contains(where: { branch 
+        let currentChainIndex = repository.chains.firstIndex { chain in 
+            chain.branches.contains { branch 
                 in branch.name == currentBranch.name
-            })
-        })
+            }
+        }
 
         if let currentChainIndex {
             repository.chains[currentChainIndex].branches
@@ -27,7 +27,7 @@ extension RepositoryManager: RepositoryManaging {
             return repository
         } else {
             repository.chains
-                .append(.init(branches: [newBranch]))
+                .append(.init(branches: [currentBranch, newBranch]))
             return repository
         }
     }
