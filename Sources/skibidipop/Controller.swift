@@ -42,21 +42,19 @@ extension Controller: Controlling {
         )
 
         var updatedRepository: Repository {
-            let repository = storage.repositories.first { 
-                $0.name == repositoryName 
+            var currentRepository: Repository {
+                let repository = storage.repositories.first { 
+                    $0.name == repositoryName 
+                }
+
+                return repository ?? Repository(name: repositoryName)
             }
-            if let repository {
-                return repositoryManager.append(
-                    newBranch,
-                    onto: currentBranch,
-                    into: repository
-                ) 
-            } else {
-                return Repository(
-                    chains: [.init(branches: [newBranch])],
-                    name: repositoryName
-                )
-            } 
+
+            return repositoryManager.append(
+                newBranch,
+                onto: currentBranch,
+                into: currentRepository
+            ) 
         }
 
         storage.inject(updatedRepository)

@@ -7,6 +7,11 @@ struct Repository: Equatable {
         self.chains = chains
         self.name = name
     }
+
+    init(name: String) {
+        self.chains = []
+        self.name = name
+    }
 }
 
 extension Repository: Codable {
