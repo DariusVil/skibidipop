@@ -1,13 +1,10 @@
-Skibidipop
+# Skibidipop
+
 ## _Diff stacking tool_
 
 [![Skibidipop](https://github.com/DariusVil/skibidipop/actions/workflows/swift.yml/badge.svg?branch=main)](https://github.com/DariusVil/skibidipop/actions/workflows/swift.yml)
 
 Skibidipop is a diff stacking (branch chaining) tool for Git repositories.
-
-ee here is *actually- written in Markdown! To get a feel
-for Markdown's syntax, type some text into the left window and
-watch the results in the right.
 
 ## Installation
 
