@@ -1,11 +1,11 @@
 TODO:
 
-- [ ] Write tests for Controller
 
+- [ ] Include master branch in chains when chaining
+- [ ] Make entry point testable
 - [ ] Add documentation
-- [ ] Implement chain
+
 - [ ] Implement sync
-- [ ] Implement list
 - [ ] Implement rebase
 
 Commands:
