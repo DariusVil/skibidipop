@@ -1,7 +1,7 @@
 {
   "configurations" : [
     {
-      "id" : "6B91BF67-A451-40EA-ACE4-325CFADC440D",
+      "id" : "0971B7A8-6152-4A3E-8D34-210F9A399490",
       "name" : "Test Scheme Action",
       "options" : {
 
@@ -9,15 +9,6 @@
     }
   ],
   "defaultOptions" : {
-    "codeCoverage" : {
-      "targets" : [
-        {
-          "containerPath" : "container:",
-          "identifier" : "skibidipop",
-          "name" : "skibidipop"
-        }
-      ]
-    },
     "targetForVariableExpansion" : {
       "containerPath" : "container:",
       "identifier" : "skibidipop",
