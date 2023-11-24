@@ -16,5 +16,9 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
+    - name: setup git email
+      run: git config --global user.email "test@user.com"
+    - name: setup git name
+      run: git config --global user.name "Test User"
     - name: Run tests
       run: swift test -v
