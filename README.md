@@ -2,9 +2,10 @@
 
 ## _Diff stacking tool_
 
-[![Build](https://github.com/DariusVil/skibidipop/actions/workflows/build.yml/badge.svg?branch=main)](https://github.com/DariusVil/skibidipop/actions/workflows/build.yml)
-
-[![Test](https://github.com/DariusVil/skibidipop/actions/workflows/test.yml/badge.svg?branch=main)](https://github.com/DariusVil/skibidipop/actions/workflows/test.yml)
+[![Mac-Build](https://github.com/DariusVil/skibidipop/actions/workflows/mac-build.yml/badge.svg)](https://github.com/DariusVil/skibidipop/actions/workflows/mac-build.yml)
+[![Mac-Test](https://github.com/DariusVil/skibidipop/actions/workflows/mac-test.yml/badge.svg)](https://github.com/DariusVil/skibidipop/actions/workflows/mac-test.yml)
+[![Linux-Build](https://github.com/DariusVil/skibidipop/actions/workflows/linux-build.yml/badge.svg)](https://github.com/DariusVil/skibidipop/actions/workflows/linux-build.yml)
+[![Linux-Test](https://github.com/DariusVil/skibidipop/actions/workflows/linux-test.yml/badge.svg)](https://github.com/DariusVil/skibidipop/actions/workflows/linux-test.yml)
 
 Skibidipop is a diff stacking (branch chaining) tool for Git repositories.
 
