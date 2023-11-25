@@ -112,7 +112,50 @@ extension Controller: Controlling {
     }
 
     func rebase() {
-        fatalError("Not implemented")
+        guard let repositoryName = gitInterpreter.repositoryName else {
+            printer.print("Repository not found")
+            return
+        }
+
+        guard let currentBranchName = gitInterpreter.currentBranch else {
+            printer.print("Cant find current branch")
+            return
+        }
+
+        guard let storage = storageWorker.load() else {
+            printer.print("Can't load skibidibop configuration. You need to `chain` first")
+            return
+        }
+
+        let repository = storage.repositories.first { 
+            $0.name == repositoryName 
+        } 
+        guard let repository = repository else {
+            return
+        }
+
+        let currentChain = repositoryManager.chain(
+            in: repository, 
+            with: Branch(name: currentBranchName)
+        )
+
+        guard let currentChain else {
+            printer.print("skibidibop configuration is messed up")
+            return
+        }
+
+        currentChain.branches.enumerated().forEach { index, branch in
+            guard index != 0 else {
+                return
+            }
+
+            let parentBranch = currentChain.branches[index - 1]
+
+            gitInterpreter.checkout(into: branch.name)
+            gitInterpreter.rebase(onto: parentBranch.name)
+        } 
+
+        gitInterpreter.checkout(into: currentBranchName)
     }
 
     func nuke() {

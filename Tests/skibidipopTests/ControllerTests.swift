@@ -145,6 +145,43 @@ final class ControllerTests: XCTestCase {
 
         XCTAssert(fixture.storageWorkerMock.cleanCalled)
     }
+
+    // MARK: - rebase
+
+    func testRebase_whenChainHasThreeBranches_thenChildBranchesAreRebasedOnTopOfTheirParentsAndReturnsToCurrentBranch() {
+        let fixture = Fixture()
+        fixture.repositoryManagerMock.chainReturnValue = .build(
+            branches: [
+                .build(name: "master"), 
+                .build(name: "feature-api"), 
+                .build(name: "feature-ui") 
+            ]
+        )
+        fixture.storageWorkerMock.loadReturnValue = .build(
+            repositories: [
+                .build(
+                    name: "Repo"
+                )
+            ]
+        )
+        fixture.gitInterpreterMock.repositoryNameReturnValue = "Repo"
+        fixture.gitInterpreterMock.currentBranchReturnValue = "feature-api"
+
+        fixture.sut.rebase()
+
+        XCTAssertEqual(
+            fixture.gitInterpreterMock.messages,
+            [
+                .checkout(branchName: "feature-api"),
+                .rebase(branchName: "master"),
+
+                .checkout(branchName: "feature-ui"),
+                .rebase(branchName: "feature-api"),
+
+                .checkout(branchName: "feature-api"),
+            ]
+        )
+    }
 }
 
 private struct Fixture {
@@ -174,6 +211,13 @@ private struct Fixture {
 
 private class GitInterpretingMock: GitInterpreting {
 
+    enum Message: Equatable {
+        case rebase(branchName: String)
+        case checkout(branchName: String)
+    }
+
+    var messages: [Message] = []
+
     func initialize() {}
 
     var createBranchCalled = false
@@ -184,9 +228,12 @@ private class GitInterpretingMock: GitInterpreting {
     var checkoutCalled = false
     func checkout(into branchName: String) {
         checkoutCalled = true
+        messages.append(.checkout(branchName: branchName))
     }
 
-    func rebase(onto branch: String) {}
+    func rebase(onto branch: String) {
+        messages.append(.rebase(branchName: branch))
+    }
 
     var commitCalled = false
     func commit(with message: String) {
@@ -247,7 +294,8 @@ private class RepositoryManagingMock: RepositoryManaging {
     } 
 
     var chainReturnValue: Chain? = nil
-    func chain(in repository: Repository, with branch: Branch) -> Chain? {
+    func chain(in repository: Repository,
+        with branch: Branch) -> Chain? {
         chainReturnValue
     }
 }
