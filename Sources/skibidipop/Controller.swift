@@ -19,13 +19,7 @@ struct Controller {
 extension Controller: Controlling {
 
     func chain(branch: String) {
-        guard let repositoryName = gitInterpreter.repositoryName else {
-            printer.print("Repository not found")
-            return
-        }
-
-        guard let currentBranchName = gitInterpreter.currentBranch else {
-            printer.print("Cant checkout from current branch")
+        guard let repositoryName, let currentBranchName else {
             return
         }
 
@@ -69,40 +63,12 @@ extension Controller: Controlling {
 
     func sync() {
         fatalError("Not implemented")
-    }
+    } 
 
-    func list() {
-        guard let repositoryName = gitInterpreter.repositoryName else {
-            printer.print("Repository not found")
-            return
-        }
-
-        guard let currentBranchName = gitInterpreter.currentBranch else {
-            printer.print("Cant find current branch")
-            return
-        }
-
-        guard let storage = storageWorker.load() else {
-            printer.print("Can't load skibidipop configuration. You need to `chain` first")
-            return
-        }
-
-        let repository = storage.repositories.first { 
-            $0.name == repositoryName 
+    func list() { 
+        guard let currentChain, let currentBranchName else { 
+            return 
         } 
-        guard let repository = repository else {
-            printer.print("skibidipop configuration is messed up")
-            return
-        }
-
-        let currentChain = repositoryManager.chain(
-            in: repository, 
-            with: Branch(name: currentBranchName)
-        )
-        guard let currentChain else {
-            printer.print("skibidipop configuration is messed up")
-            return
-        }
 
         let string = presenter.format(
             currentChain,
@@ -113,36 +79,7 @@ extension Controller: Controlling {
     }
 
     func rebase() {
-        guard let repositoryName = gitInterpreter.repositoryName else {
-            printer.print("Repository not found")
-            return
-        }
-
-        guard let currentBranchName = gitInterpreter.currentBranch else {
-            printer.print("Cant find current branch")
-            return
-        }
-
-        guard let storage = storageWorker.load() else {
-            printer.print("Can't load skibidipop configuration. You need to `chain` first")
-            return
-        }
-
-        let repository = storage.repositories.first { 
-            $0.name == repositoryName 
-        } 
-        guard let repository = repository else {
-            printer.print("skibidipop configuration is messed up")
-            return
-        }
-
-        let currentChain = repositoryManager.chain(
-            in: repository, 
-            with: Branch(name: currentBranchName)
-        )
-
-        guard let currentChain else {
-            printer.print("skibidipop configuration is messed up")
+        guard let currentChain, let currentBranchName else {
             return
         }
 
@@ -162,5 +99,61 @@ extension Controller: Controlling {
 
     func nuke() {
         storageWorker.clean()
+    }
+}
+
+private extension Controller {
+
+    var repositoryName: String? {
+        if let repositoryName = gitInterpreter.repositoryName {
+            return repositoryName
+        } else {
+            printer.print("Repository not found")
+            return nil
+        }
+    }
+
+    var currentBranchName: String? {
+        if let currentBranchName = gitInterpreter.currentBranch {
+            return currentBranchName
+        } else {
+            printer.print("Cant find current branch")
+            return nil
+        }
+    }
+
+    var storage: Storage? {
+        if let storage = storageWorker.load() {
+            return storage
+        } else {
+            printer.print("Can't load skibidipop configuration. You need to `chain` first")
+            return nil
+        }
+    }
+
+    var currentChain: Chain? {
+        guard let repositoryName, let currentBranchName, let storage else {
+            return  nil
+        }
+
+        let repository = storage.repositories.first { 
+            $0.name == repositoryName 
+        } 
+        guard let repository = repository else {
+            printer.print("skibidipop configuration is messed up")
+            return nil
+        }
+
+        let chain = repositoryManager.chain(
+            in: repository, 
+            with: Branch(name: currentBranchName)
+        )
+
+        if let chain {
+            return chain
+        } else {
+            printer.print("skibidipop configuration is messed up")
+            return nil
+        }
     }
 }

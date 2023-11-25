@@ -24,7 +24,7 @@ final class ControllerTests: XCTestCase {
         fixture.sut.chain(branch: "ios/branchey")
         XCTAssertEqual(
             fixture.printerMock.printReceivedValue, 
-            "Cant checkout from current branch"
+            "Cant find current branch"
         )
     }
 
