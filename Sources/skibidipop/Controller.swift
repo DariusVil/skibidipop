@@ -83,7 +83,7 @@ extension Controller: Controlling {
         }
 
         guard let storage = storageWorker.load() else {
-            printer.print("Can't load skibidibop configuration. You need to `chain` first")
+            printer.print("Can't load skibidipop configuration. You need to `chain` first")
             return
         }
 
@@ -91,6 +91,7 @@ extension Controller: Controlling {
             $0.name == repositoryName 
         } 
         guard let repository = repository else {
+            printer.print("skibidipop configuration is messed up")
             return
         }
 
@@ -99,7 +100,7 @@ extension Controller: Controlling {
             with: Branch(name: currentBranchName)
         )
         guard let currentChain else {
-            printer.print("skibidibop configuration is messed up")
+            printer.print("skibidipop configuration is messed up")
             return
         }
 
@@ -123,7 +124,7 @@ extension Controller: Controlling {
         }
 
         guard let storage = storageWorker.load() else {
-            printer.print("Can't load skibidibop configuration. You need to `chain` first")
+            printer.print("Can't load skibidipop configuration. You need to `chain` first")
             return
         }
 
@@ -131,6 +132,7 @@ extension Controller: Controlling {
             $0.name == repositoryName 
         } 
         guard let repository = repository else {
+            printer.print("skibidipop configuration is messed up")
             return
         }
 
@@ -140,7 +142,7 @@ extension Controller: Controlling {
         )
 
         guard let currentChain else {
-            printer.print("skibidibop configuration is messed up")
+            printer.print("skibidipop configuration is messed up")
             return
         }
 

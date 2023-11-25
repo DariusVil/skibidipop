@@ -99,7 +99,39 @@ final class ControllerTests: XCTestCase {
 
         XCTAssertEqual(
             fixture.printerMock.printReceivedValue,
-            "Can't load skibidibop configuration. You need to `chain` first"
+            "Can't load skibidipop configuration. You need to `chain` first"
+        )
+    }
+
+    func testList_givenCantFindRepository_shouldPrintAnError() {
+        let fixture = Fixture()
+        fixture.gitInterpreterMock.repositoryNameReturnValue = "Repo"
+        fixture.gitInterpreterMock.currentBranchReturnValue = "master"
+        fixture.storageWorkerMock.loadReturnValue = .build()
+        fixture.repositoryManagerMock.chainReturnValue = nil
+
+        fixture.sut.list()
+
+        XCTAssertEqual(
+            fixture.printerMock.printReceivedValue,
+            "skibidipop configuration is messed up"
+        )
+    }
+
+    func testList_givenCantFindCurrentChain_shouldPrintAnError() {
+        let fixture = Fixture()
+        fixture.gitInterpreterMock.repositoryNameReturnValue = "Repo"
+        fixture.gitInterpreterMock.currentBranchReturnValue = "master"
+        fixture.storageWorkerMock.loadReturnValue = .build(
+            repositories: [.build(name: "Repo")]
+        )
+        fixture.repositoryManagerMock.chainReturnValue = nil
+
+        fixture.sut.list()
+
+        XCTAssertEqual(
+            fixture.printerMock.printReceivedValue,
+            "skibidipop configuration is messed up"
         )
     }
 
@@ -180,6 +212,77 @@ final class ControllerTests: XCTestCase {
 
                 .checkout(branchName: "feature-api"),
             ]
+        )
+    }
+
+    func testRebase_givenNotOnRepository_shouldPrintAntError() {
+        let fixture = Fixture()
+        fixture.gitInterpreterMock.repositoryNameReturnValue = nil
+
+        fixture.sut.rebase()
+
+        XCTAssertEqual(
+            fixture.printerMock.printReceivedValue,
+            "Repository not found"
+        )
+    }
+
+    func testRebase_givenNoCurrentBranch_shouldPrintAntError() {
+        let fixture = Fixture()
+        fixture.gitInterpreterMock.repositoryNameReturnValue = "Repo"
+        fixture.gitInterpreterMock.currentBranchReturnValue = nil
+
+        fixture.sut.rebase()
+
+        XCTAssertEqual(
+            fixture.printerMock.printReceivedValue,
+            "Cant find current branch"
+        )
+    }
+
+    func testRebase_givenCantLoadStorage_shouldPrintAnError() {
+        let fixture = Fixture()
+        fixture.gitInterpreterMock.repositoryNameReturnValue = "Repo"
+        fixture.gitInterpreterMock.currentBranchReturnValue = "master"
+        fixture.storageWorkerMock.loadReturnValue = nil
+
+        fixture.sut.rebase()
+
+        XCTAssertEqual(
+            fixture.printerMock.printReceivedValue,
+            "Can't load skibidipop configuration. You need to `chain` first"
+        )
+    }
+
+    func testRebase_givenCantFindRepository_shouldPrintAnError() {
+        let fixture = Fixture()
+        fixture.gitInterpreterMock.repositoryNameReturnValue = "Repo"
+        fixture.gitInterpreterMock.currentBranchReturnValue = "master"
+        fixture.storageWorkerMock.loadReturnValue = .build()
+        fixture.repositoryManagerMock.chainReturnValue = nil
+
+        fixture.sut.rebase()
+
+        XCTAssertEqual(
+            fixture.printerMock.printReceivedValue,
+            "skibidipop configuration is messed up"
+        )
+    }
+
+    func testRebase_givenCantFindCurrentChain_shouldPrintAnError() {
+        let fixture = Fixture()
+        fixture.gitInterpreterMock.repositoryNameReturnValue = "Repo"
+        fixture.gitInterpreterMock.currentBranchReturnValue = "master"
+        fixture.storageWorkerMock.loadReturnValue = .build(
+            repositories: [.build(name: "Repo")]
+        )
+        fixture.repositoryManagerMock.chainReturnValue = nil
+
+        fixture.sut.rebase()
+
+        XCTAssertEqual(
+            fixture.printerMock.printReceivedValue,
+            "skibidipop configuration is messed up"
         )
     }
 }
