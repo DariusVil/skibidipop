@@ -136,20 +136,14 @@ private extension Controller {
             return  nil
         }
 
-        let repository = storage.repositories.first { 
+        let repository = storage.repositories.first {
             $0.name == repositoryName 
         } 
-        guard let repository = repository else {
-            printer.print("skibidipop configuration is messed up")
-            return nil
-        }
 
-        let chain = repositoryManager.chain(
+        if let repository, let chain = repositoryManager.chain(
             in: repository, 
             with: Branch(name: currentBranchName)
-        )
-
-        if let chain {
+        ) {
             return chain
         } else {
             printer.print("skibidipop configuration is messed up")
