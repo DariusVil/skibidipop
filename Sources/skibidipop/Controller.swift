@@ -62,7 +62,20 @@ extension Controller: Controlling {
     }
 
     func sync() {
-        fatalError("Not implemented")
+        guard let currentChain, let currentBranchName else {
+            return
+        }
+
+        currentChain.branches.enumerated().forEach { index, branch in
+            guard index != 0 else {
+                return
+            }
+
+            gitInterpreter.checkout(into: branch.name)
+            gitInterpreter.push()
+        } 
+
+        gitInterpreter.checkout(into: currentBranchName)
     } 
 
     func list() { 

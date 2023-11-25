@@ -7,6 +7,7 @@ protocol GitInterpreting {
     func rebase(onto branch: String)
     func commit(with message: String)
     func add()
+    func push()
 
     var isRepository: Bool { get }
     var branches: [String] { get }
@@ -41,6 +42,10 @@ extension GitInterpreter: GitInterpreting {
 
     func add() {
         execute(["add", "."])
+    }
+
+    func push() {
+        execute(["push"])
     }
 
     var isRepository: Bool {

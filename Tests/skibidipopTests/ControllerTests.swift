@@ -285,6 +285,112 @@ final class ControllerTests: XCTestCase {
             "skibidipop configuration is messed up"
         )
     }
+
+    // MARK: - sync
+
+    func testSync_givenNotOnRepository_shouldPrintAntError() {
+        let fixture = Fixture()
+        fixture.gitInterpreterMock.repositoryNameReturnValue = nil
+
+        fixture.sut.sync()
+
+        XCTAssertEqual(
+            fixture.printerMock.printReceivedValue,
+            "Repository not found"
+        )
+    }
+
+    func testSync_givenNoCurrentBranch_shouldPrintAntError() {
+        let fixture = Fixture()
+        fixture.gitInterpreterMock.repositoryNameReturnValue = "Repo"
+        fixture.gitInterpreterMock.currentBranchReturnValue = nil
+
+        fixture.sut.sync()
+
+        XCTAssertEqual(
+            fixture.printerMock.printReceivedValue,
+            "Cant find current branch"
+        )
+    }
+
+    func testSync_givenCantLoadStorage_shouldPrintAnError() {
+        let fixture = Fixture()
+        fixture.gitInterpreterMock.repositoryNameReturnValue = "Repo"
+        fixture.gitInterpreterMock.currentBranchReturnValue = "master"
+        fixture.storageWorkerMock.loadReturnValue = nil
+
+        fixture.sut.sync()
+
+        XCTAssertEqual(
+            fixture.printerMock.printReceivedValue,
+            "Can't load skibidipop configuration. You need to `chain` first"
+        )
+    }
+
+    func testSync_givenCantFindRepository_shouldPrintAnError() {
+        let fixture = Fixture()
+        fixture.gitInterpreterMock.repositoryNameReturnValue = "Repo"
+        fixture.gitInterpreterMock.currentBranchReturnValue = "master"
+        fixture.storageWorkerMock.loadReturnValue = .build()
+        fixture.repositoryManagerMock.chainReturnValue = nil
+
+        fixture.sut.sync()
+
+        XCTAssertEqual(
+            fixture.printerMock.printReceivedValue,
+            "skibidipop configuration is messed up"
+        )
+    }
+
+    func testSync_givenCantFindCurrentChain_shouldPrintAnError() {
+        let fixture = Fixture()
+        fixture.gitInterpreterMock.repositoryNameReturnValue = "Repo"
+        fixture.gitInterpreterMock.currentBranchReturnValue = "master"
+        fixture.storageWorkerMock.loadReturnValue = .build(
+            repositories: [.build(name: "Repo")]
+        )
+        fixture.repositoryManagerMock.chainReturnValue = nil
+
+        fixture.sut.sync()
+
+        XCTAssertEqual(
+            fixture.printerMock.printReceivedValue,
+            "skibidipop configuration is messed up"
+        )
+    }
+
+    func testSync_givenThreeBranchesAreAvailable_shouldPushAllBranchesExceptRootAndReturnToOriginalBranch() {
+        let fixture = Fixture()
+        fixture.repositoryManagerMock.chainReturnValue = .build(
+            branches: [
+                .build(name: "master"), 
+                .build(name: "feature-api"), 
+                .build(name: "feature-ui") 
+            ]
+        )
+        fixture.storageWorkerMock.loadReturnValue = .build(
+            repositories: [
+                .build(
+                    name: "Repo"
+                )
+            ]
+        )
+        fixture.gitInterpreterMock.repositoryNameReturnValue = "Repo"
+        fixture.gitInterpreterMock.currentBranchReturnValue = "feature-api"
+
+        fixture.sut.sync()
+
+        XCTAssertEqual(
+            fixture.gitInterpreterMock.messages,
+            [
+                .checkout(branchName: "feature-api"),
+                .push,
+                .checkout(branchName: "feature-ui"),
+                .push,
+                .checkout(branchName: "feature-api")
+            ]
+        )
+    }
 }
 
 private struct Fixture {
@@ -317,6 +423,7 @@ private class GitInterpretingMock: GitInterpreting {
     enum Message: Equatable {
         case rebase(branchName: String)
         case checkout(branchName: String)
+        case push
     }
 
     var messages: [Message] = []
@@ -346,6 +453,10 @@ private class GitInterpretingMock: GitInterpreting {
     var addCalled = false
     func add() {
         addCalled = true
+    }
+
+    func push() {
+        messages.append(.push)
     }
 
     var isRepositoryReturnValue = false
